@@ -12,42 +12,44 @@
         }
 
         body {
-            font-family: 'Segoe UI', system-ui, sans-serif;
-            background-color: #0d1117;
-            color: #e6e6e6;
+            font-family: Arial, sans-serif;
+            background-color: #0a001f;
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
             min-height: 100vh;
             padding: 40px 20px;
-            background-image: 
-                radial-gradient(circle at 15% 20%, rgba(88, 101, 242, 0.08) 0%, transparent 25%),
-                radial-gradient(circle at 85% 70%, rgba(88, 101, 242, 0.06) 0%, transparent 30%);
-            background-attachment: fixed;
+            background-image: radial-gradient(#9b4dca 1px, transparent 1px);
+            background-size: 20px 20px;
         }
 
         .container {
-            background-color: #161b22;
-            padding: 40px;
-            border-radius: 16px;
+            position: relative;
+            background-color: rgba(30, 0, 50, 0.9);
+            padding: 30px;
+            border-radius: 12px;
             width: 100%;
-            max-width: 420px;
-            margin: 0 auto 30px;
-            border: 1px solid #30363d;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+            max-width: 380px;
+            text-align: center;
+            border: 2px solid #9b4dca;
+            box-shadow: 0 0 25px #9b4dca, 0 0 50px #d27fff;
+            margin-bottom: 20px;
         }
 
         h1 {
+            margin-bottom: 25px;
             font-size: 28px;
-            color: #58a6ff;
-            margin-bottom: 32px;
-            text-align: center;
-            font-weight: 600;
+            color: #d27fff;
+            text-shadow: 0 0 8px #d27fff;
         }
 
         label {
             display: block;
-            margin-bottom: 8px;
-            color: #a5b4fc;
-            font-size: 14px;
-            font-weight: 500;
+            text-align: left;
+            margin-bottom: 6px;
+            color: #ddd;
+            font-size: 15px;
         }
 
         input[type="text"],
@@ -55,158 +57,134 @@
         input[type="tel"],
         input[type="date"] {
             width: 100%;
-            padding: 14px 16px;
-            margin-bottom: 20px;
-            background-color: #0d1117;
-            border: 1px solid #30363d;
-            border-radius: 8px;
-            color: #e6edf3;
-            font-size: 16px;
-            transition: all 0.2s ease;
+            padding: 12px;
+            margin-bottom: 18px;
+            border: 2px solid #9b4dca;
+            border-radius: 6px;
+            background-color: #2b0033;
+            color: #fff;
+            font-size: 15px;
         }
 
         input:focus {
-            border-color: #58a6ff;
-            box-shadow: 0 0 0 3px rgba(88, 166, 255, 0.15);
+            border-color: #d27fff;
+            box-shadow: 0 0 12px #d27fff;
             outline: none;
         }
 
         button {
             width: 100%;
             padding: 14px;
-            background: linear-gradient(135deg, #388bfd, #79c0ff);
+            background: linear-gradient(135deg, #9b4dca, #c084fc);
             color: white;
             border: none;
-            border-radius: 10px;
-            font-size: 16px;
-            font-weight: 600;
+            border-radius: 8px;
+            font-size: 17px;
+            font-weight: bold;
             cursor: pointer;
-            transition: all 0.25s ease;
-            margin-top: 12px;
+            transition: all 0.3s;
+            box-shadow: 0 0 15px rgba(210,127,255,0.6);
+            margin-top: 10px;
         }
 
         button:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 6px 20px rgba(88, 166, 255, 0.35);
-            background: linear-gradient(135deg, #79c0ff, #a5d6ff);
+            transform: translateY(-2px);
+            box-shadow: 0 0 30px rgba(210,127,255,0.9);
         }
 
         .confirmacao {
-            background-color: #161b22;
-            border: 1px solid #30363d;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.4);
-            padding: 40px 30px;
-            border-radius: 16px;
-            max-width: 420px;
-            margin: 0 auto 40px;
+            position: relative;
+            background: rgba(50,0,70,0.92);
+            border: 2px solid #9b4dca;
+            box-shadow: 0 0 30px #9b4dca;
+            padding: 35px 25px;
+            border-radius: 12px;
+            width: 100%;
+            max-width: 380px;
+            margin-bottom: 30px;
             text-align: center;
             display: none;
         }
 
         .mensagem-sucesso {
-            font-size: 20px;
-            color: #7ee787;
-            margin: 24px 0 16px;
-            font-weight: 500;
+            font-size: 18px;
+            margin: 20px 0;
+            color: #d0aaff;
         }
 
         #listaClientes {
             display: none;
-            margin: 24px auto 0;
-            max-width: 420px;
-            background: #161b22;
-            border: 1px solid #30363d;
-            border-radius: 12px;
-            padding: 20px;
-            max-height: 340px;
+            margin-top: 20px;
+            text-align: left;
+            max-height: 300px;
             overflow-y: auto;
+            padding: 10px;
+            border: 2px solid #84c4fc;
+            border-radius: 8px;
+            background-color: rgba(30,0,50,0.85);
         }
 
-        #listaClientes div {
-            padding: 14px 0;
-            border-bottom: 1px solid #21262d;
-            font-size: 14.5px;
-            line-height: 1.5;
+        @keyframes pisca {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.4; }
         }
 
-        #listaClientes div:last-child {
-            border-bottom: none;
+        .container::before,
+        .confirmacao::before {
+            content: '';
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: #d27fff;
+            border-radius: 50%;
+            animation: pisca 4s infinite;
         }
 
-        #listaClientes strong {
-            color: #58a6ff;
-        }
-
-        .link-voltar, .link-lista {
-            color: #58a6ff;
-            font-weight: 500;
-            text-decoration: none;
-            display: inline-block;
-            margin-top: 24px;
-            font-size: 15px;
-            transition: all 0.2s;
-        }
-
-        .link-voltar:hover, .link-lista:hover {
-            color: #79c0ff;
-            text-decoration: underline;
-        }
-
-        .footer-links {
-            text-align: center;
-            margin-top: 32px;
-            font-size: 14px;
-            color: #8b949e;
-        }
-
-        .footer-links a {
-            margin: 0 16px;
-        }
+        .container::before { top: 10%; left: 15%; }
+        .confirmacao::before { bottom: 20%; right: 20%; }
     </style>
 </head>
 <body>
 
     <div class="confirmacao" id="confirmacao">
-        <h1>Cadastro Concluído!</h1>
-        <p class="mensagem-sucesso">Cliente registrado com sucesso.</p>
-        <p style="color: #8b949e; font-size: 15px; line-height: 1.5;">
-            Os dados foram salvos localmente no navegador.<br>
-            Tudo protegido e criptografado pelo navegador.
+        <h1>Cadastro Realizado!</h1>
+        <p class="mensagem-sucesso">As informações foram salvas com segurança.</p>
+        <p style="color: #aaa; font-size: 14px; margin-top: 20px;">
+            Os dados estão protegidos no seu navegador.<br>
+            Para voltar e cadastrar outro cliente, clique abaixo.
         </p>
-        <a href="#" id="voltarCadastro" class="link-voltar">← Cadastrar novo cliente</a>
-
-        <div class="footer-links">
-            <a href="#" id="mostrarClientes" class="link-lista">Ver cadastros existentes</a>
-        </div>
+        <a href="#" id="voltarCadastro" style="color: #d27fff; font-weight: bold; text-decoration: none; margin-top: 25px; display: inline-block;">
+            → Cadastrar novo cliente
+        </a>
     </div>
 
     <div class="container">
         <h1>Cadastro de Cliente</h1>
         <form id="cadastroForm">
-            <label for="nome">Nome Completo</label>
-            <input type="text" id="nome" placeholder="João Silva" required>
+            <label for="nome">Nome Completo:</label>
+            <input type="text" id="nome" placeholder="Digite o nome completo" required>
 
-            <label for="email">E-mail</label>
-            <input type="email" id="email" placeholder="joao.silva@email.com" required>
+            <label for="email">E-mail:</label>
+            <input type="email" id="email" placeholder="exemplo@dominio.com" required>
 
-            <label for="telefone">Telefone</label>
-            <input type="tel" id="telefone" placeholder="(11) 98765-4321" required>
+            <label for="telefone">Telefone:</label>
+            <input type="tel" id="telefone" placeholder="(41) 99999-9999" required>
 
-            <label for="endereco">Endereço</label>
-            <input type="text" id="endereco" placeholder="Rua das Flores, 245 - Centro" required>
+            <label for="endereco">Endereço:</label>
+            <input type="text" id="endereco" placeholder="Rua Exemplo, 123 - Bairro" required>
 
-            <label for="dataNascimento">Data de Nascimento</label>
+            <label for="dataNascimento">Data de Nascimento:</label>
             <input type="date" id="dataNascimento" required>
 
-            <button type="submit">Cadastrar Cliente</button>
+            <button type="submit">Cadastrar com Sigilo</button>
         </form>
 
-        <div class="footer-links">
-            <a href="#" id="mostrarClientes" class="link-lista">Ver cadastros existentes</a>
-        </div>
+        <button type="button" id="mostrarClientes" style="background: linear-gradient(135deg, #4d9bd2, #84c4fc); box-shadow: 0 0 15px rgba(132,196,252,0.6);">
+            Mostrar todos os clientes
+        </button>
 
         <div id="listaClientes">
-            <!-- Lista aparece aqui -->
+            <!-- Lista de clientes aparecerá aqui -->
         </div>
     </div>
 
@@ -239,9 +217,9 @@
 
             salvarCliente(novoCliente);
 
+            // Mostra tela de sucesso e esconde formulário
             form.style.display = 'none';
             confirmacao.style.display = 'block';
-            listaClientesDiv.style.display = 'none'; // esconde a lista ao cadastrar
         });
 
         // Voltar para cadastro
@@ -250,39 +228,28 @@
             confirmacao.style.display = 'none';
             form.style.display = 'block';
             form.reset();
-            listaClientesDiv.style.display = 'none';
         });
 
-        // Mostrar lista de clientes (agora via link)
-        mostrarClientesBtn.addEventListener('click', function(e) {
-            e.preventDefault();
-
+        // Mostrar todos os clientes
+        mostrarClientesBtn.addEventListener('click', function() {
             const clientes = JSON.parse(localStorage.getItem('clientes')) || [];
 
             if (clientes.length === 0) {
-                listaClientesDiv.innerHTML = '<p style="color: #58a6ff; text-align: center;">Nenhum cliente cadastrado ainda.</p>';
+                listaClientesDiv.innerHTML = '<p style="color: #d27fff;">Nenhum cliente cadastrado ainda.</p>';
             } else {
                 listaClientesDiv.innerHTML = '';
                 clientes.forEach((cliente, index) => {
                     const clienteInfo = document.createElement('div');
+                    clienteInfo.style.borderBottom = '1px solid #d27fff';
+                    clienteInfo.style.padding = '8px 0';
                     clienteInfo.innerHTML = `
                         <strong>#${index + 1} - ${cliente.nome}</strong><br>
                         E-mail: ${cliente.email}<br>
                         Telefone: ${cliente.telefone}<br>
                         Endereço: ${cliente.endereco}<br>
                         Data de Nascimento: ${cliente.dataNascimento}<br>
-                        Cadastrado em: ${new Date(cliente.cadastradoEm).toLocaleString('pt-BR')}
+                        Cadastrado em: ${new Date(cliente.cadastradoEm).toLocaleString()}
                     `;
                     listaClientesDiv.appendChild(clienteInfo);
                 });
             }
-
-            // Mostra a lista e esconde o formulário/confirmação
-            form.style.display = 'none';
-            confirmacao.style.display = 'none';
-            listaClientesDiv.style.display = 'block';
-        });
-    </script>
-
-</body>
-</html>
