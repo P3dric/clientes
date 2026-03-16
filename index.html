@@ -137,29 +137,30 @@
             color: #58a6ff;
         }
 
-        #voltarCadastro {
+        .link-voltar, .link-lista {
             color: #58a6ff;
-            font-weight: 600;
+            font-weight: 500;
             text-decoration: none;
             display: inline-block;
-            margin-top: 28px;
-            transition: color 0.2s;
+            margin-top: 24px;
+            font-size: 15px;
+            transition: all 0.2s;
         }
 
-        #voltarCadastro:hover {
+        .link-voltar:hover, .link-lista:hover {
             color: #79c0ff;
             text-decoration: underline;
         }
 
-        #mostrarClientes {
-            margin-top: 28px;
-            background: linear-gradient(135deg, #238636, #3fb950);
-            box-shadow: 0 4px 12px rgba(63, 185, 80, 0.2);
+        .footer-links {
+            text-align: center;
+            margin-top: 32px;
+            font-size: 14px;
+            color: #8b949e;
         }
 
-        #mostrarClientes:hover {
-            background: linear-gradient(135deg, #3fb950, #56d364);
-            box-shadow: 0 6px 20px rgba(63, 185, 80, 0.35);
+        .footer-links a {
+            margin: 0 16px;
         }
     </style>
 </head>
@@ -172,7 +173,11 @@
             Os dados foram salvos localmente no navegador.<br>
             Tudo protegido e criptografado pelo navegador.
         </p>
-        <a href="#" id="voltarCadastro">← Cadastrar novo cliente</a>
+        <a href="#" id="voltarCadastro" class="link-voltar">← Cadastrar novo cliente</a>
+
+        <div class="footer-links">
+            <a href="#" id="mostrarClientes" class="link-lista">Ver cadastros existentes</a>
+        </div>
     </div>
 
     <div class="container">
@@ -196,19 +201,87 @@
             <button type="submit">Cadastrar Cliente</button>
         </form>
 
-        <button type="button" id="mostrarClientes">
-            Ver todos os clientes cadastrados
-        </button>
+        <div class="footer-links">
+            <a href="#" id="mostrarClientes" class="link-lista">Ver cadastros existentes</a>
+        </div>
 
         <div id="listaClientes">
             <!-- Lista aparece aqui -->
         </div>
     </div>
 
-    <!-- O JavaScript permanece exatamente o mesmo que você tinha -->
     <script>
-        // ... seu código JavaScript original aqui (sem alterações necessárias) ...
-        // Apenas cole o <script> que você já tinha
+        const form = document.getElementById('cadastroForm');
+        const confirmacao = document.getElementById('confirmacao');
+        const voltarCadastro = document.getElementById('voltarCadastro');
+        const mostrarClientesBtn = document.getElementById('mostrarClientes');
+        const listaClientesDiv = document.getElementById('listaClientes');
+
+        // Função para salvar cliente no localStorage
+        function salvarCliente(cliente) {
+            let clientes = JSON.parse(localStorage.getItem('clientes')) || [];
+            clientes.push(cliente);
+            localStorage.setItem('clientes', JSON.stringify(clientes));
+        }
+
+        // Evento de cadastro
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const novoCliente = {
+                nome: document.getElementById('nome').value.trim(),
+                email: document.getElementById('email').value.trim(),
+                telefone: document.getElementById('telefone').value.trim(),
+                endereco: document.getElementById('endereco').value.trim(),
+                dataNascimento: document.getElementById('dataNascimento').value,
+                cadastradoEm: new Date().toISOString()
+            };
+
+            salvarCliente(novoCliente);
+
+            form.style.display = 'none';
+            confirmacao.style.display = 'block';
+            listaClientesDiv.style.display = 'none'; // esconde a lista ao cadastrar
+        });
+
+        // Voltar para cadastro
+        voltarCadastro.addEventListener('click', function(e) {
+            e.preventDefault();
+            confirmacao.style.display = 'none';
+            form.style.display = 'block';
+            form.reset();
+            listaClientesDiv.style.display = 'none';
+        });
+
+        // Mostrar lista de clientes (agora via link)
+        mostrarClientesBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+
+            const clientes = JSON.parse(localStorage.getItem('clientes')) || [];
+
+            if (clientes.length === 0) {
+                listaClientesDiv.innerHTML = '<p style="color: #58a6ff; text-align: center;">Nenhum cliente cadastrado ainda.</p>';
+            } else {
+                listaClientesDiv.innerHTML = '';
+                clientes.forEach((cliente, index) => {
+                    const clienteInfo = document.createElement('div');
+                    clienteInfo.innerHTML = `
+                        <strong>#${index + 1} - ${cliente.nome}</strong><br>
+                        E-mail: ${cliente.email}<br>
+                        Telefone: ${cliente.telefone}<br>
+                        Endereço: ${cliente.endereco}<br>
+                        Data de Nascimento: ${cliente.dataNascimento}<br>
+                        Cadastrado em: ${new Date(cliente.cadastradoEm).toLocaleString('pt-BR')}
+                    `;
+                    listaClientesDiv.appendChild(clienteInfo);
+                });
+            }
+
+            // Mostra a lista e esconde o formulário/confirmação
+            form.style.display = 'none';
+            confirmacao.style.display = 'none';
+            listaClientesDiv.style.display = 'block';
+        });
     </script>
 
 </body>
