@@ -1,255 +1,347 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cadastro de Clientes</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Cadastro de Clientes • Sigiloso</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <style>
+    :root {
+      --bg: #0d1117;
+      --card: rgba(20, 30, 70, 0.78);
+      --accent: #00d4ff;
+      --accent-dark: #0099bb;
+      --text: #e2f0ff;
+      --text-muted: #a3c4ff;
+      --border: rgba(0, 212, 255, 0.18);
+      --error: #ff6b6b;
+      --success: #4ade80;
+    }
 
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #0a001f;
-            color: #fff;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            min-height: 100vh;
-            padding: 40px 20px;
-            background-image: radial-gradient(#9b4dca 1px, transparent 1px);
-            background-size: 20px 20px;
-        }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-        .container {
-            position: relative;
-            background-color: rgba(30, 0, 50, 0.9);
-            padding: 30px;
-            border-radius: 12px;
-            width: 100%;
-            max-width: 380px;
-            text-align: center;
-            border: 2px solid #9b4dca;
-            box-shadow: 0 0 25px #9b4dca, 0 0 50px #d27fff;
-            margin-bottom: 20px;
-        }
+    body {
+      font-family: system-ui, -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2rem 1rem;
+      background-image: 
+        radial-gradient(circle at 15% 20%, rgba(0,212,255,0.07) 0%, transparent 25%),
+        radial-gradient(circle at 85% 70%, rgba(64,196,255,0.05) 0%, transparent 30%);
+      background-attachment: fixed;
+    }
 
-        h1 {
-            margin-bottom: 25px;
-            font-size: 28px;
-            color: #d27fff;
-            text-shadow: 0 0 8px #d27fff;
-        }
+    .container, .confirmacao {
+      width: 100%;
+      max-width: 420px;
+      background: var(--card);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 2.2rem 1.8rem;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.5),
+                  inset 0 1px 1px rgba(255,255,255,0.04);
+      margin: 1rem 0;
+      position: relative;
+      overflow: hidden;
+    }
 
-        label {
-            display: block;
-            text-align: left;
-            margin-bottom: 6px;
-            color: #ddd;
-            font-size: 15px;
-        }
+    h1 {
+      font-size: 1.85rem;
+      font-weight: 600;
+      color: var(--accent);
+      margin-bottom: 1.8rem;
+      text-align: center;
+      letter-spacing: -0.5px;
+    }
 
-        input[type="text"],
-        input[type="email"],
-        input[type="tel"],
-        input[type="date"] {
-            width: 100%;
-            padding: 12px;
-            margin-bottom: 18px;
-            border: 2px solid #9b4dca;
-            border-radius: 6px;
-            background-color: #2b0033;
-            color: #fff;
-            font-size: 15px;
-        }
+    .form-group {
+      margin-bottom: 1.4rem;
+      position: relative;
+    }
 
-        input:focus {
-            border-color: #d27fff;
-            box-shadow: 0 0 12px #d27fff;
-            outline: none;
-        }
+    label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-size: 0.92rem;
+      font-weight: 500;
+      color: var(--text-muted);
+    }
 
-        button {
-            width: 100%;
-            padding: 14px;
-            background: linear-gradient(135deg, #9b4dca, #c084fc);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-size: 17px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s;
-            box-shadow: 0 0 15px rgba(210,127,255,0.6);
-            margin-top: 10px;
-        }
+    input {
+      width: 100%;
+      padding: 0.95rem 1rem;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: rgba(10, 15, 40, 0.6);
+      color: white;
+      font-size: 1rem;
+      transition: all 0.2s ease;
+    }
 
-        button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 0 30px rgba(210,127,255,0.9);
-        }
+    input:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(0, 212, 255, 0.15);
+      background: rgba(10, 15, 40, 0.8);
+    }
 
-        .confirmacao {
-            position: relative;
-            background: rgba(50,0,70,0.92);
-            border: 2px solid #9b4dca;
-            box-shadow: 0 0 30px #9b4dca;
-            padding: 35px 25px;
-            border-radius: 12px;
-            width: 100%;
-            max-width: 380px;
-            margin-bottom: 30px;
-            text-align: center;
-            display: none;
-        }
+    input:invalid:not(:placeholder-shown) {
+      border-color: var(--error);
+    }
 
-        .mensagem-sucesso {
-            font-size: 18px;
-            margin: 20px 0;
-            color: #d0aaff;
-        }
+    .input-icon {
+      position: absolute;
+      right: 1rem;
+      top: 2.35rem;
+      color: var(--text-muted);
+      pointer-events: none;
+    }
 
-        #listaClientes {
-            display: none;
-            margin-top: 20px;
-            text-align: left;
-            max-height: 300px;
-            overflow-y: auto;
-            padding: 10px;
-            border: 2px solid #84c4fc;
-            border-radius: 8px;
-            background-color: rgba(30,0,50,0.85);
-        }
+    button {
+      width: 100%;
+      padding: 1.05rem;
+      margin: 0.6rem 0;
+      border: none;
+      border-radius: 10px;
+      font-size: 1.05rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.25s ease;
+    }
 
-        @keyframes pisca {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.4; }
-        }
+    .btn-primary {
+      background: linear-gradient(135deg, #00b7eb 0%, #00eaff 100%);
+      color: #0d1117;
+      box-shadow: 0 4px 20px rgba(0, 212, 255, 0.35);
+    }
 
-        .container::before,
-        .confirmacao::before {
-            content: '';
-            position: absolute;
-            width: 4px;
-            height: 4px;
-            background: #d27fff;
-            border-radius: 50%;
-            animation: pisca 4s infinite;
-        }
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 30px rgba(0, 212, 255, 0.5);
+    }
 
-        .container::before { top: 10%; left: 15%; }
-        .confirmacao::before { bottom: 20%; right: 20%; }
-    </style>
+    .btn-secondary {
+      background: rgba(64, 196, 255, 0.12);
+      color: var(--accent);
+      border: 1px solid rgba(0, 212, 255, 0.25);
+    }
+
+    .btn-secondary:hover {
+      background: rgba(64, 196, 255, 0.22);
+    }
+
+    .confirmacao {
+      text-align: center;
+      display: none;
+      animation: fadeIn 0.6s ease-out;
+    }
+
+    .success-icon {
+      font-size: 3.8rem;
+      color: var(--success);
+      margin-bottom: 1.2rem;
+    }
+
+    .mensagem-sucesso {
+      font-size: 1.25rem;
+      margin: 1rem 0 1.5rem;
+      color: var(--text);
+    }
+
+    #listaClientes {
+      display: none;
+      margin-top: 1.5rem;
+      max-height: 340px;
+      overflow-y: auto;
+      padding: 0.8rem;
+      border-radius: 12px;
+      background: rgba(10, 15, 40, 0.45);
+      border: 1px solid var(--border);
+    }
+
+    .cliente-card {
+      padding: 1rem;
+      margin-bottom: 0.8rem;
+      background: rgba(255,255,255,0.03);
+      border-radius: 10px;
+      border-left: 4px solid var(--accent);
+      font-size: 0.94rem;
+      line-height: 1.5;
+    }
+
+    .cliente-card strong {
+      color: var(--accent);
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(15px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    ::-webkit-scrollbar {
+      width: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: rgba(0,0,0,0.3);
+    }
+    ::-webkit-scrollbar-thumb {
+      background: var(--accent);
+      border-radius: 3px;
+    }
+
+    @media (max-width: 480px) {
+      .container, .confirmacao { padding: 1.6rem 1.3rem; }
+      h1 { font-size: 1.65rem; }
+    }
+  </style>
 </head>
 <body>
 
-    <div class="confirmacao" id="confirmacao">
-        <h1>Cadastro Realizado!</h1>
-        <p class="mensagem-sucesso">As informações foram salvas com segurança.</p>
-        <p style="color: #aaa; font-size: 14px; margin-top: 20px;">
-            Os dados estão protegidos no seu navegador.<br>
-            Para voltar e cadastrar outro cliente, clique abaixo.
-        </p>
-        <a href="#" id="voltarCadastro" style="color: #d27fff; font-weight: bold; text-decoration: none; margin-top: 25px; display: inline-block;">
-            → Cadastrar novo cliente
-        </a>
+<div class="confirmacao" id="confirmacao">
+  <div class="success-icon">✓</div>
+  <h1>Cadastro Concluído!</h1>
+  <p class="mensagem-sucesso">Cliente registrado com segurança no seu navegador.</p>
+  <p style="color: #a3c4ff; font-size: 0.95rem; margin: 1rem 0 1.5rem;">
+    Os dados estão salvos localmente.<br>Para cadastrar outro, clique abaixo.
+  </p>
+  <button type="button" class="btn-primary" id="novoCadastro">
+    Cadastrar Novo Cliente
+  </button>
+</div>
+
+<div class="container">
+  <h1>Cadastro de Cliente</h1>
+
+  <form id="cadastroForm">
+    <div class="form-group">
+      <label for="nome">Nome completo</label>
+      <input type="text" id="nome" placeholder="Ex: Pedro Almeida Santos" required>
+      <i class="fas fa-user input-icon"></i>
     </div>
 
-    <div class="container">
-        <h1>Cadastro de Cliente</h1>
-        <form id="cadastroForm">
-            <label for="nome">Nome Completo:</label>
-            <input type="text" id="nome" placeholder="Digite o nome completo" required>
-
-            <label for="email">E-mail:</label>
-            <input type="email" id="email" placeholder="exemplo@dominio.com" required>
-
-            <label for="telefone">Telefone:</label>
-            <input type="tel" id="telefone" placeholder="(41) 99999-9999" required>
-
-            <label for="endereco">Endereço:</label>
-            <input type="text" id="endereco" placeholder="Rua Exemplo, 123 - Bairro" required>
-
-            <label for="dataNascimento">Data de Nascimento:</label>
-            <input type="date" id="dataNascimento" required>
-
-            <button type="submit">Cadastrar com Sigilo</button>
-        </form>
-
-        <button type="button" id="mostrarClientes" style="background: linear-gradient(135deg, #4d9bd2, #84c4fc); box-shadow: 0 0 15px rgba(132,196,252,0.6);">
-            Mostrar todos os clientes
-        </button>
-
-        <div id="listaClientes">
-            <!-- Lista de clientes aparecerá aqui -->
-        </div>
+    <div class="form-group">
+      <label for="email">E-mail</label>
+      <input type="email" id="email" placeholder="seuemail@exemplo.com" required>
+      <i class="fas fa-envelope input-icon"></i>
     </div>
 
-    <script>
-        const form = document.getElementById('cadastroForm');
-        const confirmacao = document.getElementById('confirmacao');
-        const voltarCadastro = document.getElementById('voltarCadastro');
-        const mostrarClientesBtn = document.getElementById('mostrarClientes');
-        const listaClientesDiv = document.getElementById('listaClientes');
+    <div class="form-group">
+      <label for="telefone">Telefone / WhatsApp</label>
+      <input type="tel" id="telefone" placeholder="(41) 99999-9999" pattern=".{14,15}" required>
+      <i class="fas fa-phone input-icon"></i>
+    </div>
 
-        // Função para salvar cliente no localStorage
-        function salvarCliente(cliente) {
-            let clientes = JSON.parse(localStorage.getItem('clientes')) || [];
-            clientes.push(cliente);
-            localStorage.setItem('clientes', JSON.stringify(clientes));
-        }
+    <div class="form-group">
+      <label for="endereco">Endereço</label>
+      <input type="text" id="endereco" placeholder="Rua das Flores, 198 - Centro" required>
+      <i class="fas fa-home input-icon"></i>
+    </div>
 
-        // Evento de cadastro
-        form.addEventListener('submit', function(e) {
-            e.preventDefault();
+    <div class="form-group">
+      <label for="dataNascimento">Data de nascimento</label>
+      <input type="date" id="dataNascimento" required>
+      <i class="fas fa-calendar-days input-icon"></i>
+    </div>
 
-            const novoCliente = {
-                nome: document.getElementById('nome').value.trim(),
-                email: document.getElementById('email').value.trim(),
-                telefone: document.getElementById('telefone').value.trim(),
-                endereco: document.getElementById('endereco').value.trim(),
-                dataNascimento: document.getElementById('dataNascimento').value,
-                cadastradoEm: new Date().toISOString()
-            };
+    <button type="submit" class="btn-primary">Cadastrar com Sigilo</button>
+  </form>
 
-            salvarCliente(novoCliente);
+  <button type="button" class="btn-secondary" id="mostrarClientes">
+    <i class="fas fa-users"></i> Mostrar Clientes Cadastrados
+  </button>
 
-            // Mostra tela de sucesso e esconde formulário
-            form.style.display = 'none';
-            confirmacao.style.display = 'block';
-        });
+  <div id="listaClientes"></div>
+</div>
 
-        // Voltar para cadastro
-        voltarCadastro.addEventListener('click', function(e) {
-            e.preventDefault();
-            confirmacao.style.display = 'none';
-            form.style.display = 'block';
-            form.reset();
-        });
+<script>
+// Máscara de telefone brasileira (11 dígitos com DDD)
+document.getElementById('telefone').addEventListener('input', function(e) {
+  let v = e.target.value.replace(/\D/g, '');
+  if (v.length > 11) v = v.substring(0, 11);
+  v = v.replace(/^(\d{2})(\d)/g, '($1) $2');
+  v = v.replace(/(\d)(\d{4})$/, '$1-$2');
+  e.target.value = v;
+});
 
-        // Mostrar todos os clientes
-        mostrarClientesBtn.addEventListener('click', function() {
-            const clientes = JSON.parse(localStorage.getItem('clientes')) || [];
+const form = document.getElementById('cadastroForm');
+const confirmacao = document.getElementById('confirmacao');
+const novoCadastroBtn = document.getElementById('novoCadastro');
+const mostrarBtn = document.getElementById('mostrarClientes');
+const listaDiv = document.getElementById('listaClientes');
 
-            if (clientes.length === 0) {
-                listaClientesDiv.innerHTML = '<p style="color: #d27fff;">Nenhum cliente cadastrado ainda.</p>';
-            } else {
-                listaClientesDiv.innerHTML = '';
-                clientes.forEach((cliente, index) => {
-                    const clienteInfo = document.createElement('div');
-                    clienteInfo.style.borderBottom = '1px solid #d27fff';
-                    clienteInfo.style.padding = '8px 0';
-                    clienteInfo.innerHTML = `
-                        <strong>#${index + 1} - ${cliente.nome}</strong><br>
-                        E-mail: ${cliente.email}<br>
-                        Telefone: ${cliente.telefone}<br>
-                        Endereço: ${cliente.endereco}<br>
-                        Data de Nascimento: ${cliente.dataNascimento}<br>
-                        Cadastrado em: ${new Date(cliente.cadastradoEm).toLocaleString()}
-                    `;
-                    listaClientesDiv.appendChild(clienteInfo);
-                });
-            }
+function salvarCliente(cliente) {
+  let clientes = JSON.parse(localStorage.getItem('clientes_v2') || '[]');
+  clientes.push(cliente);
+  localStorage.setItem('clientes_v2', JSON.stringify(clientes));
+}
+
+form.addEventListener('submit', e => {
+  e.preventDefault();
+  
+  const cliente = {
+    nome: document.getElementById('nome').value.trim(),
+    email: document.getElementById('email').value.trim(),
+    telefone: document.getElementById('telefone').value.trim(),
+    endereco: document.getElementById('endereco').value.trim(),
+    dataNascimento: document.getElementById('dataNascimento').value,
+    cadastradoEm: new Date().toISOString()
+  };
+
+  if (!cliente.nome || !cliente.email || !cliente.telefone || !cliente.endereco || !cliente.dataNascimento) {
+    alert('Por favor, preencha todos os campos.');
+    return;
+  }
+
+  salvarCliente(cliente);
+  
+  form.reset();
+  form.style.display = 'none';
+  confirmacao.style.display = 'block';
+});
+
+novoCadastroBtn.addEventListener('click', () => {
+  confirmacao.style.display = 'none';
+  form.style.display = 'block';
+});
+
+mostrarBtn.addEventListener('click', () => {
+  const clientes = JSON.parse(localStorage.getItem('clientes_v2') || '[]');
+  
+  if (clientes.length === 0) {
+    listaDiv.innerHTML = '<p style="text-align:center; color:#a3c4ff; padding:1.5rem;">Nenhum cliente cadastrado ainda.</p>';
+  } else {
+    listaDiv.innerHTML = '';
+    clientes.forEach((c, i) => {
+      const div = document.createElement('div');
+      div.className = 'cliente-card';
+      div.innerHTML = `
+        <strong>#${i+1} – ${c.nome}</strong><br>
+        <span style="color:#a3c4ff">E-mail:</span> ${c.email}<br>
+        <span style="color:#a3c4ff">Telefone:</span> ${c.telefone}<br>
+        <span style="color:#a3c4ff">Endereço:</span> ${c.endereco}<br>
+        <span style="color:#a3c4ff">Nascimento:</span> ${c.dataNascimento.split('-').reverse().join('/')}<br>
+        <span style="color:#a3c4ff; font-size:0.82rem">Cadastrado em:</span> ${new Date(c.cadastradoEm).toLocaleString('pt-BR')}
+      `;
+      listaDiv.appendChild(div);
+    });
+  }
+  
+  const isVisible = listaDiv.style.display === 'block';
+  listaDiv.style.display = isVisible ? 'none' : 'block';
+  mostrarBtn.innerHTML = isVisible 
+    ? '<i class="fas fa-users"></i> Mostrar Clientes Cadastrados'
+    : '<i class="fas fa-eye-slash"></i> Esconder Lista';
+});
+</script>
+</body>
+</html>
