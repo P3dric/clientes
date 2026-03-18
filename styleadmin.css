@@ -20,6 +20,26 @@
 }
 
 body {
+
+<body>
+
+  <!-- Botão discreto no canto superior esquerdo -->
+  <a href="#loginForm" class="admin-access-btn" title="Acessar área administrativa">
+    <i class="fas fa-user-shield"></i>
+  </a>
+
+  <div class="confirmacao" id="confirmacao">
+    <!-- ... conteúdo de sucesso permanece igual ... -->
+  </div>
+
+  <div class="container">
+    <!-- resto do conteúdo igual -->
+  </div>
+
+  <!-- scripts permanecem iguais -->
+</body>
+
+
   font-family: system-ui, -apple-system, sans-serif;
   background: var(--bg) url('https://static.vecteezy.com/ti/vetor-gratis/p1/5843413-resumo-ciber-seguranca-privacidade-informacoes-rede-conceito-cadeado-protecao-digital-rede-dados-pessoais-ciber-dados-ou-informacoes-privacidade-ideia-internet-link-on-hi-tech-blue-fundo-futuro-vetor.jpg') no-repeat center center fixed;
   background-size: cover;
