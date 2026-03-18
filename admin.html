@@ -72,41 +72,7 @@ toggleBtn.addEventListener('click', () => {
     toggleBtn.querySelector('i').classList.replace('fa-eye', 'fa-eye-slash');
   } else {
     senhaInput.type = 'password';
-    toggleBtn.querySelector('i').classList.replace('fa-eye-slash', 'fa-eye');
-
-    // Sequência secreta melhorada para acessar admin
-let secretBuffer = '';
-const adminSecret = 'adm'.toLowerCase();          // ← mude aqui se quiser outra sequência
-const redirectUrl = 'admin-login.html';           // ← nome do seu arquivo de login admin
-
-document.addEventListener('keydown', function(e) {
-  // Ignora se o usuário estiver digitando em um input ou textarea
-  if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') {
-    return;
-  }
-
-  // Só considera letras (ignora números, espaço, enter, etc.)
-  if (/^[a-zA-Z]$/.test(e.key)) {
-    secretBuffer += e.key.toLowerCase();
-
-    // Mantém apenas os últimos caracteres necessários (evita buffer infinito)
-    if (secretBuffer.length > adminSecret.length) {
-      secretBuffer = secretBuffer.slice(-adminSecret.length);
-    }
-
-    // Verifica se completou a sequência
-    if (secretBuffer === adminSecret) {
-      secretBuffer = ''; // limpa para evitar repetição acidental
-      console.log('Sequência secreta detectada! Redirecionando...');
-      window.location.href = redirectUrl;
-      // Alternativa: abrir em nova aba → window.open(redirectUrl, '_blank');
-    }
-  } else {
-    // Se pressionar qualquer tecla que não seja letra, reseta (mais seguro)
-    secretBuffer = '';
-  }
-});
-
+    toggleBtn.querySelector('i').classList.replace('fa-eye-slash', 'fa-eye')
 
   }
 });
