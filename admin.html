@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Acesso Admin • Sigiloso</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <link rel="stylesheet" href="admin-login.css"/>
+</head>
+<body>
+
+<div class="confirmacao" id="confirmacao">
+  <div class="success-icon">✓</div>
+  <h1>Acesso Liberado!</h1>
+  <p class="mensagem-sucesso">Autenticação realizada com sucesso.</p>
+  <p style="color: #a3c4ff; font-size: 0.95rem; margin: 1rem 0 1.5rem;">
+    Você será redirecionado ao painel administrativo.
+  </p>
+</div>
+
+<div class="container">
+  <h1>Acesso Administrativo</h1>
+
+  <form id="loginForm">
+    <div class="form-group">
+      <label for="usuario">Usuário</label>
+      <input 
+        type="text" 
+        id="usuario" 
+        placeholder="admin" 
+        required 
+        autocomplete="username"
+      >
+      <i class="fas fa-user-shield input-icon"></i>
+    </div>
+
+    <div class="form-group">
+      <label for="senha">Senha</label>
+      <div class="password-wrapper">
+        <input 
+          type="password" 
+          id="senha" 
+          placeholder="••••••••" 
+          required 
+          autocomplete="current-password"
+        >
+        <button 
+          type="button" 
+          class="toggle-password" 
+          aria-label="Mostrar ou ocultar senha"
+        >
+          <i class="fas fa-eye"></i>
+        </button>
+      </div>
+      <i class="fas fa-lock input-icon"></i>
+    </div>
+
+    <button type="submit" class="btn-primary">Entrar no Painel</button>
+  </form>
+
+  <div class="error-message" id="erroMsg"></div>
+</div>
+
+<script>
+// Mostrar / Esconder senha
+const toggleBtn = document.querySelector('.toggle-password');
+const senhaInput = document.getElementById('senha');
+
+toggleBtn.addEventListener('click', () => {
+  if (senhaInput.type === 'password') {
+    senhaInput.type = 'text';
+    toggleBtn.querySelector('i').classList.replace('fa-eye', 'fa-eye-slash');
+  } else {
+    senhaInput.type = 'password';
+    toggleBtn.querySelector('i').classList.replace('fa-eye-slash', 'fa-eye');
+  }
+});
+
+// Lógica de login (apenas demonstração – NUNCA valide assim em produção!)
+const form = document.getElementById('loginForm');
+const erroMsg = document.getElementById('erroMsg');
+const confirmacao = document.getElementById('confirmacao');
+
+form.addEventListener('submit', function(e) {
+  e.preventDefault();
+
+  const usuario = document.getElementById('usuario').value.trim();
+  const senha = document.getElementById('senha').value;
+
+  erroMsg.style.display = 'none';
+
+  // Apenas exemplo visual – substitua por chamada ao backend real
+  if (usuario === 'admin' && senha === 'sigilo2026') {
+    form.style.display = 'none';
+    confirmacao.style.display = 'block';
+
+    setTimeout(() => {
+      // window.location.href = "painel-admin.html";
+      alert("Login simulado com sucesso!\nEm produção: redirecione para o painel real.");
+    }, 2200);
+  } else {
+    erroMsg.textContent = "Usuário ou senha incorretos. Tente novamente.";
+    erroMsg.style.display = 'block';
+  }
+});
+</script>
+
+</body>
+</html>
