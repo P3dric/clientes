@@ -1,0 +1,193 @@
+/* admin-login.css */
+/* Mantém exatamente o estilo do seu formulário de cadastro */
+
+:root {
+  --bg: #0d1117;
+  --card: rgba(20, 30, 70, 0.78);
+  --accent: #00d4ff;
+  --accent-dark: #0099bb;
+  --text: #e2f0ff;
+  --text-muted: #a3c4ff;
+  --border: rgba(0, 212, 255, 0.18);
+  --error: #ff6b6b;
+  --success: #4ade80;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: system-ui, -apple-system, sans-serif;
+  background: var(--bg) url('https://static.vecteezy.com/ti/vetor-gratis/p1/5843413-resumo-ciber-seguranca-privacidade-informacoes-rede-conceito-cadeado-protecao-digital-rede-dados-pessoais-ciber-dados-ou-informacoes-privacidade-ideia-internet-link-on-hi-tech-blue-fundo-futuro-vetor.jpg') no-repeat center center fixed;
+  background-size: cover;
+  color: var(--text);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem 1rem;
+
+  background-image: 
+    linear-gradient(rgba(13, 17, 23, 0.72), rgba(13, 17, 23, 0.88)),
+    url('https://static.vecteezy.com/ti/vetor-gratis/p1/5843413-resumo-ciber-seguranca-privacidade-informacoes-rede-conceito-cadeado-protecao-digital-rede-dados-pessoais-ciber-dados-ou-informacoes-privacidade-ideia-internet-link-on-hi-tech-blue-fundo-futuro-vetor.jpg'),
+    radial-gradient(circle at 15% 20%, rgba(0,212,255,0.07) 0%, transparent 25%),
+    radial-gradient(circle at 85% 70%, rgba(64,196,255,0.05) 0%, transparent 30%);
+  background-blend-mode: multiply, normal, screen, screen;
+  background-attachment: fixed;
+}
+
+.container,
+.confirmacao {
+  width: 100%;
+  max-width: 420px;
+  background: var(--card);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 2.2rem 1.8rem;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.5),
+              inset 0 1px 1px rgba(255,255,255,0.04);
+  margin: 1rem 0;
+  position: relative;
+  overflow: hidden;
+}
+
+h1 {
+  font-size: 1.85rem;
+  font-weight: 600;
+  color: var(--accent);
+  margin-bottom: 1.8rem;
+  text-align: center;
+  letter-spacing: -0.5px;
+}
+
+.form-group {
+  margin-bottom: 1.4rem;
+  position: relative;
+}
+
+label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-size: 0.92rem;
+  font-weight: 500;
+  color: var(--text-muted);
+}
+
+input {
+  width: 100%;
+  padding: 0.95rem 3rem 0.95rem 1rem;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: rgba(10, 15, 40, 0.6);
+  color: white;
+  font-size: 1rem;
+  transition: all 0.2s ease;
+}
+
+input:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(0, 212, 255, 0.15);
+  background: rgba(10, 15, 40, 0.8);
+}
+
+.input-icon {
+  position: absolute;
+  right: 1rem;
+  top: 2.35rem;
+  color: var(--text-muted);
+  pointer-events: none;
+}
+
+.password-wrapper {
+  position: relative;
+}
+
+.toggle-password {
+  position: absolute;
+  right: 1rem;
+  top: 2.35rem;
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  font-size: 1.1rem;
+  padding: 0;
+  z-index: 2;
+}
+
+.toggle-password:hover {
+  color: var(--accent);
+}
+
+button {
+  width: 100%;
+  padding: 1.05rem;
+  margin: 0.6rem 0;
+  border: none;
+  border-radius: 10px;
+  font-size: 1.05rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #00b7eb 0%, #00eaff 100%);
+  color: #0d1117;
+  box-shadow: 0 4px 20px rgba(0, 212, 255, 0.35);
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(0, 212, 255, 0.5);
+}
+
+.confirmacao {
+  text-align: center;
+  display: none;
+  animation: fadeIn 0.6s ease-out;
+}
+
+.success-icon {
+  font-size: 3.8rem;
+  color: var(--success);
+  margin-bottom: 1.2rem;
+}
+
+.mensagem-sucesso {
+  font-size: 1.25rem;
+  margin: 1rem 0 1.5rem;
+  color: var(--text);
+}
+
+.error-message {
+  color: var(--error);
+  background: rgba(255, 107, 107, 0.12);
+  padding: 0.9rem;
+  border-radius: 10px;
+  border: 1px solid rgba(255,107,107,0.3);
+  text-align: center;
+  margin-top: 1rem;
+  font-size: 0.95rem;
+  display: none;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(15px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 480px) {
+  .container, .confirmacao {
+    padding: 1.6rem 1.3rem;
+  }
+  h1 {
+    font-size: 1.65rem;
+  }
+}
