@@ -73,23 +73,7 @@ toggleBtn.addEventListener('click', () => {
   } else {
     senhaInput.type = 'password';
     toggleBtn.querySelector('i').classList.replace('fa-eye-slash', 'fa-eye');
-  
 
-// Sequência secreta: pressione as teclas A D M em ordem (não precisa ser rápida)
-let secretSequence = '';
-const adminCode = 'adm'; // pode mudar para outra sequência, ex: 'sigilo'
-
-document.addEventListener('keydown', function(e) {
-  secretSequence += e.key.toLowerCase();
-  
-  // Mantém apenas os últimos caracteres necessários
-  if (secretSequence.length > adminCode.length) {
-    secretSequence = secretSequence.slice(-adminCode.length);
-  }
-  
-  if (secretSequence === adminCode) {
-    secretSequence = ''; // reseta
-    window.location.href = 'admin-login.html';
   }
 });
 
