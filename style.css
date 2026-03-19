@@ -224,4 +224,350 @@ button {
   h1 {
     font-size: 1.65rem;
   }
+
+
+
+
+/* style.css */
+
+:root {
+  --bg: #0d1117;
+  --card: rgba(20, 30, 70, 0.78);
+  --accent: #00d4ff;
+  --accent-dark: #0099bb;
+  --text: #e2f0ff;
+  --text-muted: #a3c4ff;
+  --border: rgba(0, 212, 255, 0.18);
+  --error: #ff6b6b;
+  --success: #4ade80;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: system-ui, -apple-system, sans-serif;
+  background: var(--bg) url('https://static.vecteezy.com/ti/vetor-gratis/p1/5843413-resumo-ciber-seguranca-privacidade-informacoes-rede-conceito-cadeado-protecao-digital-rede-dados-pessoais-ciber-dados-ou-informacoes-privacidade-ideia-internet-link-on-hi-tech-blue-fundo-futuro-vetor.jpg') no-repeat center center fixed;
+  background-size: cover;
+  color: var(--text);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem 1rem;
+
+  /* Overlay + gradientes sutis */
+  background-image: 
+    linear-gradient(rgba(13, 17, 23, 0.72), rgba(13, 17, 23, 0.88)),
+    url('https://static.vecteezy.com/ti/vetor-gratis/p1/5843413-resumo-ciber-seguranca-privacidade-informacoes-rede-conceito-cadeado-protecao-digital-rede-dados-pessoais-ciber-dados-ou-informacoes-privacidade-ideia-internet-link-on-hi-tech-blue-fundo-futuro-vetor.jpg'),
+    radial-gradient(circle at 15% 20%, rgba(0,212,255,0.07) 0%, transparent 25%),
+    radial-gradient(circle at 85% 70%, rgba(64,196,255,0.05) 0%, transparent 30%);
+  background-blend-mode: multiply, normal, screen, screen;
+  background-attachment: fixed;
+}
+
+/* ──────────────────────────────────────────────── */
+
+.container,
+.confirmacao {
+  width: 100%;
+  max-width: 420px;
+  background: var(--card);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 2.2rem 1.8rem;
+  box-shadow: 
+    0 8px 32px rgba(0,0,0,0.5),
+    inset 0 1px 1px rgba(255,255,255,0.04);
+  margin: 1rem 0;
+  position: relative;
+  overflow: hidden;
+}
+
+h1 {
+  font-size: 1.85rem;
+  font-weight: 600;
+  color: var(--accent);
+  margin-bottom: 1.8rem;
+  text-align: center;
+  letter-spacing: -0.5px;
+}
+
+/* Formulário */
+
+.form-group {
+  margin-bottom: 1.4rem;
+  position: relative;
+}
+
+label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-size: 0.92rem;
+  font-weight: 500;
+  color: var(--text-muted);
+}
+
+input {
+  width: 100%;
+  padding: 0.95rem 1rem;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: rgba(10, 15, 40, 0.6);
+  color: white;
+  font-size: 1rem;
+  transition: all 0.2s ease;
+}
+
+input:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(0, 212, 255, 0.15);
+  background: rgba(10, 15, 40, 0.8);
+}
+
+input:invalid:not(:placeholder-shown) {
+  border-color: var(--error);
+}
+
+.input-icon {
+  position: absolute;
+  right: 1rem;
+  top: 2.35rem;
+  color: var(--text-muted);
+  pointer-events: none;
+}
+
+/* ──────────────────────────────────────────────── */
+/*                BOTÕES - Estilos unificados      */
+/* ──────────────────────────────────────────────── */
+
+button {
+  width: 100%;
+  padding: 1.05rem;
+  margin: 0.6rem 0;
+  border: none;
+  border-radius: 12px;
+  font-size: 1.05rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.28s cubic-bezier(0.22, 0.61, 0.36, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Botão Principal - Glow + Gradiente forte (recomendado como principal) */
+.btn-primary,
+.btn-glow {
+  background: linear-gradient(135deg, #00b7eb 0%, #00eaff 45%, #7affff 100%);
+  color: #0d1117;
+  box-shadow: 
+    0 6px 25px rgba(0, 212, 255, 0.42),
+    inset 0 1px 2px rgba(255,255,255,0.18);
+}
+
+.btn-primary:hover,
+.btn-glow:hover {
+  transform: translateY(-3px);
+  box-shadow: 
+    0 12px 40px rgba(0, 212, 255, 0.6),
+    inset 0 1px 3px rgba(255,255,255,0.25);
+}
+
+.btn-primary:active,
+.btn-glow:active {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 15px rgba(0, 212, 255, 0.4);
+}
+
+.btn-primary::before,
+.btn-glow::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(
+    circle at 30% 40%,
+    rgba(255,255,255,0.18) 0%,
+    transparent 60%
+  );
+  opacity: 0;
+  transition: opacity 0.4s;
+  pointer-events: none;
+}
+
+.btn-primary:hover::before,
+.btn-glow:hover::before {
+  opacity: 1;
+}
+
+/* Botão Secundário / Neon Pulse */
+.btn-secondary,
+.btn-neon-pulse {
+  background: rgba(64, 196, 255, 0.12);
+  color: var(--accent);
+  border: 2px solid var(--accent);
+}
+
+.btn-secondary:hover,
+.btn-neon-pulse:hover {
+  background: var(--accent);
+  color: #0d1117;
+  box-shadow: 0 0 25px rgba(0, 212, 255, 0.7);
+}
+
+.btn-neon-pulse::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border: 2px solid var(--accent);
+  border-radius: 12px;
+  opacity: 0.6;
+  box-shadow: 0 0 15px rgba(0, 212, 255, 0.5);
+  animation: pulse 2.2s infinite ease-in-out;
+  pointer-events: none;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 0.4; transform: scale(1.02); }
+  50%      { opacity: 0.9; transform: scale(1.08); }
+}
+
+/* Botão minimalista com underline neon (cancelar, link-like) */
+.btn-underline {
+  width: 100%;
+  padding: 0.9rem;
+  margin: 0.5rem 0;
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  font-size: 1rem;
+  font-weight: 500;
+  position: relative;
+  transition: color 0.25s;
+}
+
+.btn-underline::after {
+  content: '';
+  position: absolute;
+  bottom: 0.4rem;
+  left: 50%;
+  width: 0;
+  height: 2px;
+  background: var(--accent);
+  border-radius: 2px;
+  transform: translateX(-50%);
+  transition: width 0.35s ease;
+}
+
+.btn-underline:hover {
+  color: var(--accent);
+}
+
+.btn-underline:hover::after {
+  width: 60%;
+}
+
+/* Tela de sucesso */
+
+.confirmacao {
+  text-align: center;
+  display: none;
+  animation: fadeIn 0.6s ease-out;
+}
+
+.success-icon {
+  font-size: 3.8rem;
+  color: var(--success);
+  margin-bottom: 1.2rem;
+}
+
+.mensagem-sucesso {
+  font-size: 1.25rem;
+  margin: 1rem 0 1.5rem;
+  color: var(--text);
+}
+
+/* Lista de clientes */
+
+#listaClientes {
+  display: none;
+  margin-top: 1.5rem;
+  max-height: 340px;
+  overflow-y: auto;
+  padding: 0.8rem;
+  border-radius: 12px;
+  background: rgba(10, 15, 40, 0.45);
+  border: 1px solid var(--border);
+}
+
+.cliente-card {
+  padding: 1rem;
+  margin-bottom: 0.8rem;
+  background: rgba(255,255,255,0.03);
+  border-radius: 10px;
+  border-left: 4px solid var(--accent);
+  font-size: 0.94rem;
+  line-height: 1.5;
+}
+
+.cliente-card strong {
+  color: var(--accent);
+}
+
+/* Animações e scrollbar */
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(15px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: rgba(0,0,0,0.3);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--accent);
+  border-radius: 3px;
+}
+
+/* Responsividade */
+
+@media (max-width: 480px) {
+  .container,
+  .confirmacao {
+    padding: 1.6rem 1.3rem;
+  }
+
+  h1 {
+    font-size: 1.65rem;
+  }
+
+  button {
+    padding: 0.95rem;
+    font-size: 1rem;
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
 }
