@@ -5,12 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Cadastro de Clientes • Sigiloso</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
-
-  <!-- Aqui você coloca o novo link pro seu arquivo -->
+  <!-- Seu arquivo de estilos -->
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
+<!-- Tela de confirmação (sucesso) -->
 <div class="confirmacao" id="confirmacao" style="display: none;">
   <div class="success-icon">✓</div>
   <h1>Cadastro Concluído!</h1>
@@ -24,8 +24,12 @@
 </div>
 
 <div class="container">
-  <h1>Cadastro de Cliente</h1>
+  <!-- Título → gatilho secreto para modo admin -->
+  <h1 id="tituloAdminTrigger" style="cursor: pointer; user-select: none;">
+    Cadastro de Cliente
+  </h1>
 
+  <!-- Formulário de cadastro -->
   <form id="cadastroForm">
     <div class="form-group">
       <label for="nome">Nome completo</label>
@@ -59,10 +63,42 @@
 
     <button type="submit" class="btn-primary">Cadastrar com Sigilo</button>
   </form>
+
+  <!-- Área administrativa – aparece só após o gatilho -->
+  <div id="areaAdmin" style="display: none; margin-top: 3rem; padding: 1.5rem; background: #1e293b; border-radius: 12px; border: 1px solid #334155; color: #e2e8f0;">
+    <h2 style="margin-top: 0; color: #f87171;">
+      <i class="fas fa-user-shield"></i> Área Administrativa
+    </h2>
+    <p style="color: #94a3b8; margin-bottom: 1.5rem;">
+      Acesso restrito • Apenas administradores
+    </p>
+
+    <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+      <button id="btnVerClientes" class="btn-primary" style="background: #f87171; border-color: #ef4444;">
+        <i class="fas fa-list"></i> Ver Todos os Clientes
+      </button>
+
+      <button id="btnLimparDados" class="btn-primary" style="background: #7c3aed; border-color: #6d28d9;">
+        <i class="fas fa-trash-alt"></i> Limpar Todos os Dados
+      </button>
+
+      <button id="sairAdmin" class="btn-primary" style="background: #475569; border-color: #334155;">
+        <i class="fas fa-sign-out-alt"></i> Sair do Modo Admin
+      </button>
+    </div>
+
+    <!-- Área onde a lista de clientes será exibida -->
+    <div id="listaClientes" style="margin-top: 2rem; display: none;">
+      <h3 style="color: #60a5fa;">Clientes Cadastrados</h3>
+      <div id="clientesTable"></div>
+    </div>
+  </div>
 </div>
 
 <script>
-// Máscara de telefone brasileira (11 dígitos com DDD)
+// ────────────────────────────────────────────────
+// Máscara de telefone brasileira (11 dígitos)
+// ────────────────────────────────────────────────
 document.getElementById('telefone').addEventListener('input', function(e) {
   let v = e.target.value.replace(/\D/g, '');
   if (v.length > 11) v = v.substring(0, 11);
@@ -71,6 +107,9 @@ document.getElementById('telefone').addEventListener('input', function(e) {
   e.target.value = v;
 });
 
+// ────────────────────────────────────────────────
+// Funções básicas de cadastro
+// ────────────────────────────────────────────────
 const form = document.getElementById('cadastroForm');
 const confirmacao = document.getElementById('confirmacao');
 const novoCadastroBtn = document.getElementById('novoCadastro');
@@ -83,7 +122,7 @@ function salvarCliente(cliente) {
 
 form.addEventListener('submit', e => {
   e.preventDefault();
-  
+
   const cliente = {
     nome: document.getElementById('nome').value.trim(),
     email: document.getElementById('email').value.trim(),
@@ -99,7 +138,6 @@ form.addEventListener('submit', e => {
   }
 
   salvarCliente(cliente);
-  
   form.reset();
   form.style.display = 'none';
   confirmacao.style.display = 'block';
@@ -109,6 +147,81 @@ novoCadastroBtn.addEventListener('click', () => {
   confirmacao.style.display = 'none';
   form.style.display = 'block';
 });
+
+// ────────────────────────────────────────────────
+// Acesso admin secreto: 5 cliques rápidos no título
+// ────────────────────────────────────────────────
+const titulo = document.getElementById('tituloAdminTrigger');
+const areaAdmin = document.getElementById('areaAdmin');
+const sairAdminBtn = document.getElementById('sairAdmin');
+const btnVerClientes = document.getElementById('btnVerClientes');
+const btnLimparDados = document.getElementById('btnLimparDados');
+const listaClientes = document.getElementById('listaClientes');
+const clientesTable = document.getElementById('clientesTable');
+
+let cliqueCount = 0;
+const CLIQUES_NECESSARIOS = 5;
+const TEMPO_RESET = 1800; // ~1.8 segundos para resetar contagem
+
+let timer;
+
+titulo.addEventListener('click', () => {
+  cliqueCount++;
+  clearTimeout(timer);
+  timer = setTimeout(() => { cliqueCount = 0; }, TEMPO_RESET);
+
+  if (cliqueCount >= CLIQUES_NECESSARIOS) {
+    areaAdmin.style.display = 'block';
+    titulo.style.color = '#f87171';
+    titulo.style.transition = 'color 0.4s';
+    cliqueCount = 0;
+  }
+});
+
+sairAdminBtn.addEventListener('click', () => {
+  areaAdmin.style.display = 'none';
+  listaClientes.style.display = 'none';
+  titulo.style.color = '';
+});
+
+// Ver todos os clientes
+btnVerClientes.addEventListener('click', () => {
+  const clientes = JSON.parse(localStorage.getItem('clientes_v2') || '[]');
+
+  if (clientes.length === 0) {
+    clientesTable.innerHTML = '<p style="color: #94a3b8;">Nenhum cliente cadastrado ainda.</p>';
+  } else {
+    let html = '<table style="width:100%; border-collapse: collapse; margin-top: 1rem;">';
+    html += '<thead><tr style="background:#334155;"><th style="padding:10px;">Nome</th><th>Email</th><th>Telefone</th><th>Data Cad.</th></tr></thead>';
+    html += '<tbody>';
+
+    clientes.forEach(c => {
+      const data = new Date(c.cadastradoEm).toLocaleDateString('pt-BR');
+      html += `<tr style="border-bottom:1px solid #475569;">
+        <td style="padding:10px;">${c.nome}</td>
+        <td>${c.email}</td>
+        <td>${c.telefone}</td>
+        <td>${data}</td>
+      </tr>`;
+    });
+
+    html += '</tbody></table>';
+    clientesTable.innerHTML = html;
+  }
+
+  listaClientes.style.display = 'block';
+});
+
+// Limpar todos os dados (com confirmação)
+btnLimparDados.addEventListener('click', () => {
+  if (confirm('Tem certeza que deseja APAGAR TODOS os clientes salvos? Essa ação não pode ser desfeita.')) {
+    localStorage.removeItem('clientes_v2');
+    alert('Todos os dados foram apagados.');
+    listaClientes.style.display = 'none';
+    clientesTable.innerHTML = '';
+  }
+});
 </script>
+
 </body>
 </html>
