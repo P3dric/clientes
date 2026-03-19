@@ -182,6 +182,11 @@ cancelarLogin.addEventListener('click', () => {
 confirmarLogin.addEventListener('click', tentarLogin);
 senhaAdmin.addEventListener('keypress', (e) => {
   if (e.key === 'Enter') tentarLogin();
+
+// Senha administrativa – MUDE PARA UMA SENHA SUA
+const SENHA_ADMIN_CORRETA = "miguel viado";  // ← altere aqui
+
+
 });
 
 function tentarLogin() {
