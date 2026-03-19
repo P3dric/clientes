@@ -9,12 +9,9 @@
   <!-- Aqui você coloca o novo link pro seu arquivo -->
   <link rel="stylesheet" href="style.css">
 </head>
-
-  </style>
-</head>
 <body>
 
-<div class="confirmacao" id="confirmacao">
+<div class="confirmacao" id="confirmacao" style="display: none;">
   <div class="success-icon">✓</div>
   <h1>Cadastro Concluído!</h1>
   <p class="mensagem-sucesso">Cliente registrado com segurança no seu navegador.</p>
@@ -62,12 +59,6 @@
 
     <button type="submit" class="btn-primary">Cadastrar com Sigilo</button>
   </form>
-
-  <button type="button" class="btn-secondary" id="mostrarClientes">
-    <i class="fas fa-users"></i> Mostrar Clientes Cadastrados
-  </button>
-
-  <div id="listaClientes"></div>
 </div>
 
 <script>
@@ -83,8 +74,6 @@ document.getElementById('telefone').addEventListener('input', function(e) {
 const form = document.getElementById('cadastroForm');
 const confirmacao = document.getElementById('confirmacao');
 const novoCadastroBtn = document.getElementById('novoCadastro');
-const mostrarBtn = document.getElementById('mostrarClientes');
-const listaDiv = document.getElementById('listaClientes');
 
 function salvarCliente(cliente) {
   let clientes = JSON.parse(localStorage.getItem('clientes_v2') || '[]');
@@ -119,35 +108,6 @@ form.addEventListener('submit', e => {
 novoCadastroBtn.addEventListener('click', () => {
   confirmacao.style.display = 'none';
   form.style.display = 'block';
-});
-
-mostrarBtn.addEventListener('click', () => {
-  const clientes = JSON.parse(localStorage.getItem('clientes_v2') || '[]');
-  
-  if (clientes.length === 0) {
-    listaDiv.innerHTML = '<p style="text-align:center; color:#a3c4ff; padding:1.5rem;">Nenhum cliente cadastrado ainda.</p>';
-  } else {
-    listaDiv.innerHTML = '';
-    clientes.forEach((c, i) => {
-      const div = document.createElement('div');
-      div.className = 'cliente-card';
-      div.innerHTML = `
-        <strong>#${i+1} – ${c.nome}</strong><br>
-        <span style="color:#a3c4ff">E-mail:</span> ${c.email}<br>
-        <span style="color:#a3c4ff">Telefone:</span> ${c.telefone}<br>
-        <span style="color:#a3c4ff">Endereço:</span> ${c.endereco}<br>
-        <span style="color:#a3c4ff">Nascimento:</span> ${c.dataNascimento.split('-').reverse().join('/')}<br>
-        <span style="color:#a3c4ff; font-size:0.82rem">Cadastrado em:</span> ${new Date(c.cadastradoEm).toLocaleString('pt-BR')}
-      `;
-      listaDiv.appendChild(div);
-    });
-  }
-  
-  const isVisible = listaDiv.style.display === 'block';
-  listaDiv.style.display = isVisible ? 'none' : 'block';
-  mostrarBtn.innerHTML = isVisible 
-    ? '<i class="fas fa-users"></i> Mostrar Clientes Cadastrados'
-    : '<i class="fas fa-eye-slash"></i> Esconder Lista';
 });
 </script>
 </body>
