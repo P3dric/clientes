@@ -108,3 +108,87 @@ form.addEventListener('submit', function(e) {
 
 </body>
 </html>
+
+
+
+  <!-- Área administrativa -->
+  <div id="areaAdmin" style="display: none; margin-top: 3rem; padding: 1.5rem; 
+                              background: #1e293b; border-radius: 12px; 
+                              border: 1px solid #334155; color: #e2e8f0;">
+    <h2 style="margin-top: 0; color: #f87171;">
+      <i class="fas fa-user-shield"></i> Área Administrativa
+    </h2>
+    <p style="color: #94a3b8; margin-bottom: 1.5rem;">
+      Acesso restrito • Apenas administradores
+    </p>
+
+    <div style="display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 2rem;">
+      <button id="btnVerClientes" class="btn-primary" style="background: #f87171; border-color: #ef4444;">
+        <i class="fas fa-list"></i> Ver Todos os Clientes
+      </button>
+
+      <button id="btnLimparDados" class="btn-primary" style="background: #7c3aed; border-color: #6d28d9;">
+        <i class="fas fa-trash-alt"></i> Limpar Todos os Dados
+      </button>
+
+      <button id="sairAdmin" class="btn-primary" style="background: #475569; border-color: #334155;">
+        <i class="fas fa-sign-out-alt"></i> Sair
+      </button>
+    </div>
+
+    <div id="listaClientes" style="display: none;">
+      <h3 style="color: #60a5fa; margin-bottom: 1rem;">Clientes Cadastrados</h3>
+      <div id="clientesTable" style="max-height: 400px; overflow-y: auto;"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+// Senha administrativa – MUDE PARA UMA SENHA SUA
+const SENHA_ADMIN_CORRETA = "admincuritiba2026";  // ← altere aqui
+
+// Elementos
+const btnLoginAdmin     = document.getElementById('btnLoginAdmin');
+const modalLoginAdmin   = document.getElementById('modalLoginAdmin');
+const senhaAdmin        = document.getElementById('senhaAdmin');
+const confirmarLogin    = document.getElementById('confirmarLogin');
+const cancelarLogin     = document.getElementById('cancelarLogin');
+const erroLogin         = document.getElementById('erroLogin');
+const areaAdmin         = document.getElementById('areaAdmin');
+const titulo            = document.getElementById('tituloAdminTrigger');
+const sairAdmin         = document.getElementById('sairAdmin');
+const btnVerClientes    = document.getElementById('btnVerClientes');
+const btnLimparDados    = document.getElementById('btnLimparDados');
+const listaClientes     = document.getElementById('listaClientes');
+const clientesTable     = document.getElementById('clientesTable');
+
+// Máscara de telefone
+document.getElementById('telefone').addEventListener('input', function(e) {
+  let v = e.target.value.replace(/\D/g, '');
+  if (v.length > 11) v = v.substring(0, 11);
+  v = v.replace(/^(\d{2})(\d)/g, '($1) $2');
+  v = v.replace(/(\d)(\d{4})$/, '$1-$2');
+  e.target.value = v;
+});
+
+// Login admin
+btnLoginAdmin.addEventListener('click', () => {
+  modalLoginAdmin.style.display = 'flex';
+  senhaAdmin.value = '';
+  erroLogin.style.display = 'none';
+  senhaAdmin.focus();
+});
+
+cancelarLogin.addEventListener('click', () => {
+  modalLoginAdmin.style.display = 'none';
+});
+
+confirmarLogin.addEventListener('click', tentarLogin);
+senhaAdmin.addEventListener('keypress', (e) => {
+  if (e.key === 'Enter') tentarLogin();
+
+// Senha administrativa – MUDE PARA UMA SENHA SUA
+const SENHA_ADMIN_CORRETA = "miguel viado";  // ← altere aqui
+
+
+});
