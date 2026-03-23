@@ -148,6 +148,19 @@
 </head>
 <body>
 
+<!-- Modal de login admin -->
+<div id="modalLoginAdmin">
+  <div class="modal-content">
+    <h3>Acesso Administrativo</h3>
+    <input type="password" id="senhaAdmin" placeholder="Senha administrativa" autocomplete="current-password">
+    <div class="admin-buttons" style="margin-top: 1.5rem;">
+      <button id="cancelarLogin">Cancelar</button>
+      <button id="confirmarLogin">Entrar</button>
+    </div>
+    <p id="erroLogin">Senha incorreta. Tente novamente.</p>
+  </div>
+</div>
+
 <!-- Tela de sucesso cadastro -->
 <div class="confirmacao" id="confirmacao">
   <div class="success-icon">✓</div>
@@ -250,6 +263,72 @@ document.getElementById('telefone').addEventListener('input', e => {
   e.target.value = v;
 });
 
+// ──────────────────────────────────────────────
+// Login Administrativo
+// ──────────────────────────────────────────────
+function abrirModalAdmin() {
+  modalLogin.style.display = 'flex';
+  senhaAdminInput.value = '';
+  erroLogin.style.display = 'none';
+  senhaAdminInput.focus();
+}
+
+function tentarLoginAdmin() {
+  if (senhaAdminInput.value === SENHA_ADMIN_CORRETA) {
+    modalLogin.style.display = 'none';
+    areaAdmin.style.display = 'block';
+    tituloAdmin.style.color = '#f87171';
+  } else {
+    erroLogin.style.display = 'block';
+    senhaAdminInput.value = '';
+    senhaAdminInput.focus();
+  }
+}
+
+tituloAdmin.addEventListener('click', abrirModalAdmin);
+confirmarLogin.addEventListener('click', tentarLoginAdmin);
+senhaAdminInput.addEventListener('keypress', e => {
+  if (e.key === 'Enter') tentarLoginAdmin();
+});
+cancelarLogin.addEventListener('click', () => {
+  modalLogin.style.display = 'none';
+});
+
+// ──────────────────────────────────────────────
+// Ações da área admin
+// ──────────────────────────────────────────────
+sairAdmin.addEventListener('click', () => {
+  areaAdmin.style.display = 'none';
+  listaClientesDiv.style.display = 'none';
+  tituloAdmin.style.color = '';
+});
+
+btnVerClientes.addEventListener('click', () => {
+  const clientes = JSON.parse(localStorage.getItem('clientes_v2') || '[]');
+  
+  if (clientes.length === 0) {
+    clientesTable.innerHTML = '<p style="padding:1.5rem; color:#94a3b8; text-align:center;">Nenhum cliente cadastrado ainda.</p>';
+  } else {
+    let html = '<table><thead><tr><th>Nome</th><th>Email</th><th>Telefone</th><th>Data</th></tr></thead><tbody>';
+    clientes.forEach(c => {
+      const data = new Date(c.cadastradoEm).toLocaleDateString('pt-BR');
+      html += `<tr><td>${c.nome}</td><td>${c.email}</td><td>${c.telefone}</td><td>${data}</td></tr>`;
+    });
+    html += '</tbody></table>';
+    clientesTable.innerHTML = html;
+  }
+  
+  listaClientesDiv.style.display = 'block';
+});
+
+btnLimparDados.addEventListener('click', () => {
+  if (!confirm('Deseja APAGAR TODOS os clientes salvos?\nAção irreversível.')) return;
+  
+  localStorage.removeItem('clientes_v2');
+  alert('Todos os dados foram removidos.');
+  listaClientesDiv.style.display = 'none';
+  clientesTable.innerHTML = '';
+});
 
 // ──────────────────────────────────────────────
 // Cadastro de cliente
