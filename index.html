@@ -3,28 +3,291 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Cadastro de Clientes • Sigiloso</title>
+  <title>Cadastro de Clientes • Acesso Restrito</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
-  <link rel="stylesheet" href="style.css">
+  <!-- Coloque aqui seu admin-login.css se ainda quiser usar -->
+  <style>
+    :root {
+      --primary: #3b82f6;
+      --danger: #ef4444;
+      --purple: #7c3aed;
+      --dark: #0f172a;
+      --gray: #334155;
+      --light: #e2e8f0;
+    }
+    body {
+      font-family: system-ui, sans-serif;
+      background: linear-gradient(135deg, #0f172a, #1e293b);
+      color: var(--light);
+      margin: 0;
+      padding: 20px;
+      min-height: 100vh;
+    }
+    .container {
+      max-width: 540px;
+      margin: 2rem auto;
+      background: #1e293b;
+      padding: 2.5rem;
+      border-radius: 16px;
+      border: 1px solid var(--gray);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+    }
+    h1, h2, h3 {
+      text-align: center;
+    }
+    .form-group {
+      position: relative;
+      margin-bottom: 1.6rem;
+    }
+    label {
+      display: block;
+      margin-bottom: 0.5rem;
+      color: #94a3b8;
+    }
+    input {
+      width: 100%;
+      padding: 12px 12px 12px 40px;
+      background: var(--dark);
+      border: 1px solid var(--gray);
+      border-radius: 8px;
+      color: white;
+      font-size: 1rem;
+    }
+    input:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(59,130,246,0.2);
+    }
+    .input-icon {
+      position: absolute;
+      left: 12px;
+      top: 42px;
+      color: #64748b;
+    }
+    .btn-primary {
+      width: 100%;
+      padding: 14px;
+      background: var(--primary);
+      border: none;
+      border-radius: 8px;
+      color: white;
+      font-size: 1.05rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-primary:hover {
+      background: #2563eb;
+      transform: translateY(-1px);
+    }
+    .error-message, #erroLogin {
+      color: var(--danger);
+      text-align: center;
+      margin: 1rem 0;
+      display: none;
+    }
+    .confirmacao {
+      text-align: center;
+      padding: 3rem 1rem;
+      display: none;
+    }
+    .success-icon {
+      font-size: 4.5rem;
+      color: #22c55e;
+      margin-bottom: 1rem;
+    }
+    #areaAdmin {
+      background: #1e293b;
+      border: 1px solid #334155;
+      border-radius: 12px;
+      padding: 1.8rem;
+      margin-top: 2.5rem;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    th, td {
+      padding: 12px;
+      text-align: left;
+    }
+    th {
+      background: #334155;
+      color: #cbd5e1;
+    }
+    tr {
+      border-bottom: 1px solid #475569;
+    }
+    .admin-buttons {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin: 1.5rem 0 2rem;
+    }
+    .admin-buttons button {
+      flex: 1;
+      min-width: 180px;
+    }
+    #modalLoginAdmin {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.7);
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+    }
+    .modal-content {
+      background: #1e293b;
+      padding: 2rem;
+      border-radius: 12px;
+      width: 90%;
+      max-width: 420px;
+      border: 1px solid #475569;
+    }
+  </style>
 </head>
 <body>
 
-<!-- Botão de login admin (discreto, canto superior direito) -->
-<button id="btnLoginAdmin" 
-        style="position: fixed; top: 15px; right: 15px; 
-               padding: 8px 14px; font-size: 0.85rem; 
-               background: #334155; color: #94a3b8; 
-               border: 1px solid #475569; border-radius: 6px; 
-               cursor: pointer; z-index: 100; opacity: 0.8;">
-  <i class="fas fa-user-shield"></i> Admin
-</button>
+<!-- Tela de sucesso cadastro -->
+<div class="confirmacao" id="confirmacao">
+  <div class="success-icon">✓</div>
+  <h1>Cadastro Concluído!</h1>
+  <p>Cliente registrado com segurança no navegador (localStorage).</p>
+  <button type="button" class="btn-primary" id="novoCadastro">Cadastrar Novo Cliente</button>
+</div>
 
-<!-- Modal de login admin -->
-<div id="modalLoginAdmin" 
-     style="display: none; position: fixed; inset: 0; 
-            background: rgba(0,0,0,0.75); z-index: 200; 
-            align-items: center; justify-content: center;">
-  <div style="background: #1e293b; padding: 2rem; border-radius: 12px; 
-              width: 90%; max-width: 380px; border: 1px solid #334155; color: #e2e8f0;">
-    <h3 style="margin-top: 0; color: #60a5fa; text-align: center;">
-      
+<!-- Conteúdo principal -->
+<div class="container" id="mainContent">
+
+  <h1 id="tituloAdminTrigger" style="cursor:pointer;">
+    Cadastro de Cliente
+    <small style="font-size:0.7rem; color:#64748b; display:block; margin-top:8px;">
+    </small>
+  </h1>
+
+  <form id="cadastroForm">
+    <div class="form-group">
+      <label for="nome">Nome completo</label>
+      <input type="text" id="nome" placeholder="Ex: João Silva" required>
+      <i class="fas fa-user input-icon"></i>
+    </div>
+
+    <div class="form-group">
+      <label for="email">E-mail</label>
+      <input type="email" id="email" placeholder="seuemail@exemplo.com" required>
+      <i class="fas fa-envelope input-icon"></i>
+    </div>
+
+    <div class="form-group">
+      <label for="telefone">Telefone / WhatsApp</label>
+      <input type="tel" id="telefone" placeholder="(41) 99999-9999" required>
+      <i class="fas fa-phone input-icon"></i>
+    </div>
+
+    <div class="form-group">
+      <label for="endereco">Endereço</label>
+      <input type="text" id="endereco" placeholder="Rua Exemplo, 123 - Bairro" required>
+      <i class="fas fa-home input-icon"></i>
+    </div>
+
+    <div class="form-group">
+      <label for="dataNascimento">Data de nascimento</label>
+      <input type="date" id="dataNascimento" required>
+      <i class="fas fa-calendar-days input-icon"></i>
+    </div>
+
+    <button type="submit" class="btn-primary">Cadastrar com Sigilo</button>
+  </form>
+
+  <!-- Área administrativa (aparece após senha correta) -->
+  <div id="areaAdmin" style="display:none;">
+    <h2><i class="fas fa-user-shield"></i> Área Administrativa</h2>
+    <p style="color:#94a3b8; text-align:center;">Acesso restrito</p>
+
+    <div class="admin-buttons">
+      <button id="btnVerClientes" style="background:var(--danger);">Ver Todos os Clientes</button>
+      <button id="btnLimparDados" style="background:var(--purple);">Limpar Todos os Dados</button>
+      <button id="sairAdmin" style="background:#475569;">Sair</button>
+    </div>
+
+    <div id="listaClientes" style="display:none;">
+      <h3 style="color:#60a5fa;">Clientes Cadastrados</h3>
+      <div id="clientesTable"></div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+// ──────────────────────────────────────────────
+// Configurações
+// ──────────────────────────────────────────────
+const SENHA_ADMIN_CORRETA = "adminlogin2026";   // ← MUDE PARA UMA SENHA SEGURA SUA
+
+// Elementos DOM
+const cadastroForm      = document.getElementById('cadastroForm');
+const confirmacao       = document.getElementById('confirmacao');
+const novoCadastroBtn   = document.getElementById('novoCadastro');
+const tituloAdmin       = document.getElementById('tituloAdminTrigger');
+const modalLogin        = document.getElementById('modalLoginAdmin');
+const senhaAdminInput   = document.getElementById('senhaAdmin');
+const confirmarLogin    = document.getElementById('confirmarLogin');
+const cancelarLogin     = document.getElementById('cancelarLogin');
+const erroLogin         = document.getElementById('erroLogin');
+const areaAdmin         = document.getElementById('areaAdmin');
+const btnVerClientes    = document.getElementById('btnVerClientes');
+const btnLimparDados    = document.getElementById('btnLimparDados');
+const sairAdmin         = document.getElementById('sairAdmin');
+const clientesTable     = document.getElementById('clientesTable');
+const listaClientesDiv  = document.getElementById('listaClientes');
+
+// Máscara simples de telefone (BR)
+document.getElementById('telefone').addEventListener('input', e => {
+  let v = e.target.value.replace(/\D/g, '');
+  if (v.length > 11) v = v.slice(0,11);
+  v = v.replace(/^(\d{2})(\d)/g, '($1) $2');
+  v = v.replace(/(\d)(\d{4})$/, '$1-$2');
+  e.target.value = v;
+});
+
+
+// ──────────────────────────────────────────────
+// Cadastro de cliente
+// ──────────────────────────────────────────────
+function salvarCliente(cliente) {
+  let clientes = JSON.parse(localStorage.getItem('clientes_v2') || '[]');
+  clientes.push(cliente);
+  localStorage.setItem('clientes_v2', JSON.stringify(clientes));
+}
+
+cadastroForm.addEventListener('submit', e => {
+  e.preventDefault();
+
+  const cliente = {
+    nome:           document.getElementById('nome').value.trim(),
+    email:          document.getElementById('email').value.trim(),
+    telefone:       document.getElementById('telefone').value.trim(),
+    endereco:       document.getElementById('endereco').value.trim(),
+    dataNascimento: document.getElementById('dataNascimento').value,
+    cadastradoEm:   new Date().toISOString()
+  };
+
+  if (Object.values(cliente).some(v => !v)) {
+    alert('Preencha todos os campos obrigatórios.');
+    return;
+  }
+
+  salvarCliente(cliente);
+  cadastroForm.reset();
+  cadastroForm.style.display = 'none';
+  confirmacao.style.display = 'block';
+});
+
+novoCadastroBtn.addEventListener('click', () => {
+  confirmacao.style.display = 'none';
+  cadastroForm.style.display = 'block';
+});
+
+</script>
+</body>
+</html>
