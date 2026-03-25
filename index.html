@@ -254,6 +254,7 @@
       <button id="btnLimparDados" style="background:var(--danger);">Limpar Tudo</button>
       <button id="sairAdmin" style="background:#475569;">Sair</button>
     </div>
+
     <div id="conteudoAdmin"></div>
   </div>
 </div>
@@ -284,25 +285,6 @@ const confirmacao = document.getElementById('confirmacao');
 const msgSucesso = document.getElementById('msgSucesso');
 const subMsg = document.getElementById('subMsg');
 const novoCadastroBtn = document.getElementById('novoCadastro');
-
-// ====================== MÁSCARA TELEFONE ======================
-document.getElementById('telefone').addEventListener('input', function(e) {
-  let v = e.target.value.replace(/\D/g, '');
-  if (v.length > 11) v = v.slice(0,11);
-  v = v.replace(/^(\d{2})(\d)/, '($1) $2');
-  v = v.replace(/(\d{5})(\d{4})$/, '$1-$2');
-  e.target.value = v;
-});
-
-// ====================== TROCA DE ABAS ======================
-tabs.forEach(tab => {
-  tab.addEventListener('click', () => {
-    tabs.forEach(t => t.classList.remove('active'));
-    tab.classList.add('active');
-    Object.values(forms).forEach(f => f.classList.add('hidden'));
-    forms[tab.dataset.tab].classList.remove('hidden');
-  });
-});
 
 // ====================== LOGIN ADMIN ======================
 function abrirModalAdmin() {
@@ -489,16 +471,15 @@ function mostrarCompras() {
   conteudoAdmin.innerHTML = html;
 }
 
-// ====================== BOTÃO NOVO PRODUTO (JUNTADO) ======================
-document.getElementById('btnNovoProduto').addEventListener('click', () => {
-  window.open('cadastro-produtos.html', '_blank');
-});
-
-// Botões restantes
+// Botões Admin
 document.getElementById('btnVerClientes').addEventListener('click', () => { conteudoAdmin.innerHTML = ''; mostrarClientes(); });
 document.getElementById('btnVerProdutos').addEventListener('click', () => { conteudoAdmin.innerHTML = ''; mostrarProdutos(); });
 document.getElementById('btnVerVendas').addEventListener('click', () => { conteudoAdmin.innerHTML = ''; mostrarVendas(); });
 document.getElementById('btnVerCompras').addEventListener('click', () => { conteudoAdmin.innerHTML = ''; mostrarCompras(); });
+
+document.getElementById('btnNovoProduto').addEventListener('click', () => {
+  alert("O cadastro de produtos está em um arquivo separado.\n\nCrie o arquivo 'cadastro-produtos.html' para usá-lo.");
+});
 
 document.getElementById('btnLimparDados').addEventListener('click', () => {
   if (confirm('⚠️ DESEJA APAGAR TODOS OS DADOS?\n\nEsta ação é irreversível!')) {
