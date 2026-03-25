@@ -220,7 +220,7 @@
     <button type="submit" class="btn-primary">Cadastrar Cliente</button>
   </form>
 
-  <!-- Formulário de Compras -->
+  <!-- ==================== FORMULÁRIO DE COMPRAS ==================== -->
   <form id="cadastroFormCompra" class="form-tab hidden">
     <div class="form-group">
       <label>Seu Nome ou Telefone</label>
@@ -254,41 +254,6 @@
       <button id="btnLimparDados" style="background:var(--danger);">Limpar Tudo</button>
       <button id="sairAdmin" style="background:#475569;">Sair</button>
     </div>
-
-    <!-- Formulário de Cadastro de Produto (integrado) -->
-    <div id="formNovoProduto" class="hidden">
-      <h3 style="margin: 20px 0 15px;">Cadastrar Novo Produto</h3>
-      <form id="cadastroFormProduto">
-        <div class="form-group">
-          <label>Nome do Produto</label>
-          <input type="text" id="nomeProduto" placeholder="Ex: Camiseta Premium" required>
-          <i class="fas fa-box input-icon"></i>
-        </div>
-        <div class="form-group">
-          <label>Preço de Venda (R$)</label>
-          <input type="number" step="0.01" id="precoProduto" placeholder="89.90" required>
-          <i class="fas fa-dollar-sign input-icon"></i>
-        </div>
-        <div class="form-group">
-          <label>Estoque Inicial</label>
-          <input type="number" id="estoqueProduto" placeholder="50" value="0" required>
-          <i class="fas fa-warehouse input-icon"></i>
-        </div>
-        <div class="form-group">
-          <label>Categoria</label>
-          <select id="categoriaProduto">
-            <option value="Camisetas">Camisetas</option>
-            <option value="Calças">Calças</option>
-            <option value="Calçados">Calçados</option>
-            <option value="Acessórios">Acessórios</option>
-            <option value="Outros">Outros</option>
-          </select>
-        </div>
-        <button type="submit" class="btn-primary">Salvar Produto</button>
-        <button type="button" id="cancelarNovoProduto" style="background:#475569; width:100%; padding:14px; border:none; border-radius:8px; color:white; cursor:pointer; margin-top:8px;">Cancelar</button>
-      </form>
-    </div>
-
     <div id="conteudoAdmin"></div>
   </div>
 </div>
@@ -306,7 +271,6 @@ const cancelarLogin = document.getElementById('cancelarLogin');
 const erroLogin = document.getElementById('erroLogin');
 const areaAdmin = document.getElementById('areaAdmin');
 const conteudoAdmin = document.getElementById('conteudoAdmin');
-const formNovoProduto = document.getElementById('formNovoProduto');
 
 // Tabs
 const tabs = document.querySelectorAll('.tab');
@@ -320,6 +284,25 @@ const confirmacao = document.getElementById('confirmacao');
 const msgSucesso = document.getElementById('msgSucesso');
 const subMsg = document.getElementById('subMsg');
 const novoCadastroBtn = document.getElementById('novoCadastro');
+
+// ====================== MÁSCARA TELEFONE ======================
+document.getElementById('telefone').addEventListener('input', function(e) {
+  let v = e.target.value.replace(/\D/g, '');
+  if (v.length > 11) v = v.slice(0,11);
+  v = v.replace(/^(\d{2})(\d)/, '($1) $2');
+  v = v.replace(/(\d{5})(\d{4})$/, '$1-$2');
+  e.target.value = v;
+});
+
+// ====================== TROCA DE ABAS ======================
+tabs.forEach(tab => {
+  tab.addEventListener('click', () => {
+    tabs.forEach(t => t.classList.remove('active'));
+    tab.classList.add('active');
+    Object.values(forms).forEach(f => f.classList.add('hidden'));
+    forms[tab.dataset.tab].classList.remove('hidden');
+  });
+});
 
 // ====================== LOGIN ADMIN ======================
 function abrirModalAdmin() {
@@ -350,7 +333,6 @@ document.getElementById('sairAdmin').addEventListener('click', () => {
   areaAdmin.style.display = 'none';
   tituloAdminTrigger.style.color = '';
   conteudoAdmin.innerHTML = '';
-  formNovoProduto.classList.add('hidden');
 });
 
 // ====================== SALVAR / CARREGAR ======================
@@ -381,7 +363,7 @@ forms.cliente.addEventListener('submit', e => {
   forms.cliente.reset();
 });
 
-// ====================== CADASTRO DE COMPRA ======================
+// ====================== CADASTRO DE COMPRA (AGORA FUNCIONANDO) ======================
 const selectProdutoCompra = document.getElementById('produtoCompra');
 const quantidadeCompra = document.getElementById('quantidadeCompra');
 const valorTotalCompra = document.getElementById('valorTotalCompra');
@@ -446,97 +428,52 @@ forms.compra.addEventListener('submit', e => {
   atualizarProdutosCompra();
 });
 
-// ====================== CADASTRO DE PRODUTO (DENTRO DO SISTEMA) ======================
-document.getElementById('btnNovoProduto').addEventListener('click', () => {
-  conteudoAdmin.innerHTML = '';           // limpa visualizações
-  formNovoProduto.classList.toggle('hidden');
-});
-
-document.getElementById('cadastroFormProduto').addEventListener('submit', e => {
-  e.preventDefault();
-
-  const produto = {
-    id: Date.now(),
-    nome: document.getElementById('nomeProduto').value.trim(),
-    preco: parseFloat(document.getElementById('precoProduto').value),
-    estoque: parseInt(document.getElementById('estoqueProduto').value) || 0,
-    categoria: document.getElementById('categoriaProduto').value,
-    cadastradoEm: new Date().toISOString()
-  };
-
-  let produtos = carregarDados('produtos');
-  produtos.push(produto);
-  salvarDados('produtos', produtos);
-
-  mostrarSucesso("Produto cadastrado com sucesso!", "Agora disponível para compras e vendas.");
-  document.getElementById('cadastroFormProduto').reset();
-  formNovoProduto.classList.add('hidden');
-});
-
-document.getElementById('cancelarNovoProduto').addEventListener('click', () => {
-  formNovoProduto.classList.add('hidden');
-});
-
 // ====================== VISUALIZAÇÃO NO ADMIN ======================
 function mostrarClientes() {
-  formNovoProduto.classList.add('hidden');
   const clientes = carregarDados('clientes_v2');
   let html = `<h3>Clientes Cadastrados (${clientes.length})</h3>`;
-  if (clientes.length === 0) {
-    html += `<p style="text-align:center; padding:2rem; color:#94a3b8;">Nenhum cliente cadastrado.</p>`;
-  } else {
+  if (clientes.length === 0) html += `<p style="text-align:center; padding:2rem; color:#94a3b8;">Nenhum cliente cadastrado.</p>`;
+  else {
     html += `<table><thead><tr><th>Nome</th><th>Email</th><th>Telefone</th><th>Data</th></tr></thead><tbody>`;
-    clientes.forEach(c => {
-      html += `<tr><td>${c.nome}</td><td>${c.email}</td><td>${c.telefone}</td><td>${new Date(c.cadastradoEm).toLocaleDateString('pt-BR')}</td></tr>`;
-    });
+    clientes.forEach(c => html += `<tr><td>${c.nome}</td><td>${c.email}</td><td>${c.telefone}</td><td>${new Date(c.cadastradoEm).toLocaleDateString('pt-BR')}</td></tr>`);
     html += `</tbody></table>`;
   }
   conteudoAdmin.innerHTML = html;
 }
 
 function mostrarProdutos() {
-  formNovoProduto.classList.add('hidden');
   const produtos = carregarDados('produtos');
   let html = `<h3>Produtos Cadastrados (${produtos.length})</h3>`;
-  if (produtos.length === 0) {
-    html += `<p style="text-align:center; padding:2rem; color:#94a3b8;">Nenhum produto cadastrado.</p>`;
-  } else {
+  if (produtos.length === 0) html += `<p style="text-align:center; padding:2rem; color:#94a3b8;">Nenhum produto cadastrado.</p>`;
+  else {
     html += `<table><thead><tr><th>Produto</th><th>Categoria</th><th>Preço</th><th>Estoque</th></tr></thead><tbody>`;
-    produtos.forEach(p => {
-      html += `<tr><td>${p.nome}</td><td>${p.categoria}</td><td>R$ ${p.preco.toFixed(2)}</td><td><strong>${p.estoque}</strong></td></tr>`;
-    });
+    produtos.forEach(p => html += `<tr><td>${p.nome}</td><td>${p.categoria}</td><td>R$ ${p.preco.toFixed(2)}</td><td><strong>${p.estoque}</strong></td></tr>`);
     html += `</tbody></table>`;
   }
   conteudoAdmin.innerHTML = html;
 }
 
 function mostrarVendas() {
-  formNovoProduto.classList.add('hidden');
   const vendas = carregarDados('vendas');
   let html = `<h3>Vendas Registradas (${vendas.length})</h3>`;
   if (vendas.length === 0) html += `<p style="text-align:center; padding:2rem; color:#94a3b8;">Nenhuma venda registrada.</p>`;
   else {
     html += `<table><thead><tr><th>Data</th><th>Cliente</th><th>Produto</th><th>Qtd</th><th>Total</th></tr></thead><tbody>`;
     vendas.sort((a,b) => new Date(b.dataVenda) - new Date(a.dataVenda));
-    vendas.forEach(v => {
-      html += `<tr><td>${new Date(v.dataVenda).toLocaleDateString('pt-BR')}</td><td>${v.clienteNome}</td><td>${v.produtoNome}</td><td>${v.quantidade}</td><td>R$ ${v.valorTotal.toFixed(2)}</td></tr>`;
-    });
+    vendas.forEach(v => html += `<tr><td>${new Date(v.dataVenda).toLocaleDateString('pt-BR')}</td><td>${v.clienteNome}</td><td>${v.produtoNome}</td><td>${v.quantidade}</td><td>R$ ${v.valorTotal.toFixed(2)}</td></tr>`);
     html += `</tbody></table>`;
   }
   conteudoAdmin.innerHTML = html;
 }
 
 function mostrarCompras() {
-  formNovoProduto.classList.add('hidden');
   const compras = carregarDados('compras');
   let html = `<h3>Compras Registradas (${compras.length})</h3>`;
   if (compras.length === 0) html += `<p style="text-align:center; padding:2rem; color:#94a3b8;">Nenhuma compra registrada.</p>`;
   else {
     html += `<table><thead><tr><th>Data</th><th>Cliente</th><th>Produto</th><th>Qtd</th><th>Total</th></tr></thead><tbody>`;
     compras.sort((a,b) => new Date(b.data) - new Date(a.data));
-    compras.forEach(c => {
-      html += `<tr><td>${new Date(c.data).toLocaleDateString('pt-BR')}</td><td>${c.cliente}</td><td>${c.produtoNome}</td><td>${c.quantidade}</td><td>R$ ${c.valorTotal.toFixed(2)}</td></tr>`;
-    });
+    compras.forEach(c => html += `<tr><td>${new Date(c.data).toLocaleDateString('pt-BR')}</td><td>${c.cliente}</td><td>${c.produtoNome}</td><td>${c.quantidade}</td><td>R$ ${c.valorTotal.toFixed(2)}</td></tr>`);
     html += `</tbody></table>`;
   }
   conteudoAdmin.innerHTML = html;
@@ -548,12 +485,15 @@ document.getElementById('btnVerProdutos').addEventListener('click', () => { cont
 document.getElementById('btnVerVendas').addEventListener('click', () => { conteudoAdmin.innerHTML = ''; mostrarVendas(); });
 document.getElementById('btnVerCompras').addEventListener('click', () => { conteudoAdmin.innerHTML = ''; mostrarCompras(); });
 
+document.getElementById('btnNovoProduto').addEventListener('click', () => {
+  alert("O cadastro de produtos está em arquivo separado.\n\nCrie o arquivo cadastro-produtos.html");
+});
+
 document.getElementById('btnLimparDados').addEventListener('click', () => {
   if (confirm('⚠️ DESEJA APAGAR TODOS OS DADOS?\n\nEsta ação é irreversível!')) {
     localStorage.clear();
     alert('Todos os dados foram apagados.');
     conteudoAdmin.innerHTML = '';
-    formNovoProduto.classList.add('hidden');
     atualizarProdutosCompra();
   }
 });
@@ -564,7 +504,6 @@ function mostrarSucesso(titulo, subtitulo) {
   subMsg.textContent = subtitulo;
   Object.values(forms).forEach(f => f.classList.add('hidden'));
   confirmacao.style.display = 'block';
-  formNovoProduto.classList.add('hidden');
 }
 
 novoCadastroBtn.addEventListener('click', () => {
