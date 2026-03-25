@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Cadastro de Clientes • Nuzzi</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  
+  <style>
+    :root {
+      --primary: #3b82f6;
+      --danger: #ef4444;
+      --dark: #0f172a;
+      --gray: #334155;
+      --light: #e2e8f0;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      font-family: system-ui, -apple-system, sans-serif;
+      background: linear-gradient(135deg, #0f172a, #1e293b);
+      color: var(--light);
+      margin: 0;
+      padding: 20px;
+      min-height: 100vh;
+    }
+
+    .container {
+      max-width: 420px;
+      margin: 2rem auto;
+      background: #1e293b;
+      padding: 2rem;
+      border-radius: 12px;
+      border: 1px solid var(--gray);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 1.5rem;
+      color: #60a5fa;
+    }
+
+    .form-group {
+      position: relative;
+      margin-bottom: 1.5rem;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 0.5rem;
+      color: #94a3b8;
+      font-size: 0.95rem;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px 12px 12px 42px;
+      background: var(--dark);
+      border: 1px solid var(--gray);
+      border-radius: 8px;
+      color: white;
+      font-size: 1rem;
+    }
+
+    input:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+    }
+
+    .input-icon {
+      position: absolute;
+      left: 14px;
+      top: 42px;
+      color: #64748b;
+      font-size: 1.1rem;
+    }
+
+    .btn-primary {
+      width: 100%;
+      padding: 14px;
+      background: var(--primary);
+      border: none;
+      border-radius: 8px;
+      color: white;
+      font-size: 1.05rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn-primary:hover {
+      background: #2563eb;
+      transform: translateY(-2px);
+    }
+
+    .confirmacao {
+      text-align: center;
+      padding: 3rem 1rem;
+      display: none;
+    }
+
+    .success-icon {
+      font-size: 5rem;
+      color: #22c55e;
+      margin-bottom: 1rem;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h1><i class="fas fa-user-plus"></i> Cadastro de Cliente</h1>
+
+  <form id="cadastroFormCliente">
+    <div class="form-group">
+      <label for="nome">Nome completo</label>
+      <input type="text" id="nome" placeholder="Ex: João Silva" required>
+      <i class="fas fa-user input-icon"></i>
+    </div>
+
+    <div class="form-group">
+      <label for="email">E-mail</label>
+      <input type="email" id="email" placeholder="seuemail@exemplo.com" required>
+      <i class="fas fa-envelope input-icon"></i>
+    </div>
+
+    <div class="form-group">
+      <label for="telefone">Telefone / WhatsApp</label>
+      <input type="tel" id="telefone" placeholder="(41) 99999-9999" required>
+      <i class="fas fa-phone input-icon"></i>
+    </div>
+
+    <div class="form-group">
+      <label for="endereco">Endereço</label>
+      <input type="text" id="endereco" placeholder="Rua Exemplo, 123 - Bairro, Cidade" required>
+      <i class="fas fa-map-marker-alt input-icon"></i>
+    </div>
+
+    <div class="form-group">
+      <label for="dataNascimento">Data de nascimento</label>
+      <input type="date" id="dataNascimento" required>
+      <i class="fas fa-calendar-days input-icon"></i>
+    </div>
+
+    <button type="submit" class="btn-primary">Cadastrar Cliente</button>
+  </form>
+</div>
+
+<!-- Tela de Sucesso -->
+<div class="confirmacao" id="confirmacao">
+  <div class="success-icon">✓</div>
+  <h1>Cadastro Concluído!</h1>
+  <p>Cliente registrado com sucesso no navegador.</p>
+  <button type="button" class="btn-primary" id="novoCadastro">Cadastrar Novo Cliente</button>
+</div>
+
+<script>
+// Máscara de telefone
+document.getElementById('telefone').addEventListener('input', function(e) {
+  let v = e.target.value.replace(/\D/g, '');
+  if (v.length > 11) v = v.slice(0, 11);
+  v = v.replace(/^(\d{2})(\d)/, '($1) $2');
+  v = v.replace(/(\d{5})(\d{4})$/, '$1-$2');
+  e.target.value = v;
+});
+
+// Salvar cliente
+document.getElementById('cadastroFormCliente').addEventListener('submit', function(e) {
+  e.preventDefault();
+
+  const cliente = {
+    id: Date.now(),
+    nome: document.getElementById('nome').value.trim(),
+    email: document.getElementById('email').value.trim(),
+    telefone: document.getElementById('telefone').value.trim(),
+    endereco: document.getElementById('endereco').value.trim(),
+    dataNascimento: document.getElementById('dataNascimento').value,
+    cadastradoEm: new Date().toISOString()
+  };
+
+  if (!cliente.nome || !cliente.email || !cliente.telefone || !cliente.endereco || !cliente.dataNascimento) {
+    alert('Por favor, preencha todos os campos.');
+    return;
+  }
+
+  // Salva no localStorage
+  let clientes = JSON.parse(localStorage.getItem('clientes_v2') || '[]');
+  clientes.push(cliente);
+  localStorage.setItem('clientes_v2', JSON.stringify(clientes));
+
+  // Mostra tela de sucesso
+  document.getElementById('cadastroFormCliente').style.display = 'none';
+  document.getElementById('confirmacao').style.display = 'block';
+});
+
+// Novo cadastro
+document.getElementById('novoCadastro').addEventListener('click', function() {
+  document.getElementById('confirmacao').style.display = 'none';
+  document.getElementById('cadastroFormCliente').style.display = 'block';
+  document.getElementById('cadastroFormCliente').reset();
+});
+</script>
+
+</body>
+</html>

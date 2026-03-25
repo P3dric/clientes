@@ -16,7 +16,6 @@
       --gray: #334155;
       --light: #e2e8f0;
     }
-
     * { box-sizing: border-box; }
     body {
       font-family: system-ui, -apple-system, sans-serif;
@@ -26,7 +25,6 @@
       padding: 20px;
       min-height: 100vh;
     }
-
     .container {
       max-width: 520px;
       margin: 2rem auto;
@@ -36,9 +34,7 @@
       border: 1px solid var(--gray);
       box-shadow: 0 10px 30px rgba(0,0,0,0.5);
     }
-
     h1 { text-align: center; margin-bottom: 1.5rem; cursor: pointer; }
-
     .tabs {
       display: flex;
       background: #334155;
@@ -46,7 +42,6 @@
       padding: 4px;
       margin-bottom: 1.5rem;
     }
-
     .tab {
       flex: 1;
       padding: 12px;
@@ -55,24 +50,15 @@
       cursor: pointer;
       font-weight: 500;
     }
-
     .tab.active {
       background: var(--primary);
       color: white;
     }
-
     .form-group {
       position: relative;
       margin-bottom: 1.5rem;
     }
-
-    label {
-      display: block;
-      margin-bottom: 0.5rem;
-      color: #94a3b8;
-      font-size: 0.95rem;
-    }
-
+    label { display: block; margin-bottom: 0.5rem; color: #94a3b8; font-size: 0.95rem; }
     input, select {
       width: 100%;
       padding: 12px 12px 12px 42px;
@@ -82,13 +68,11 @@
       color: white;
       font-size: 1rem;
     }
-
     input:focus, select:focus {
       outline: none;
       border-color: var(--primary);
       box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
     }
-
     .input-icon {
       position: absolute;
       left: 14px;
@@ -96,7 +80,6 @@
       color: #64748b;
       font-size: 1.1rem;
     }
-
     .btn-primary {
       width: 100%;
       padding: 14px;
@@ -108,22 +91,17 @@
       cursor: pointer;
       transition: all 0.2s;
     }
-
     .btn-primary:hover { background: #2563eb; transform: translateY(-2px); }
-
     .confirmacao {
       text-align: center;
       padding: 3rem 1rem;
       display: none;
     }
-
     .success-icon {
       font-size: 5rem;
       color: var(--success);
       margin-bottom: 1rem;
     }
-
-    /* Área Administrativa */
     #areaAdmin {
       background: #1e293b;
       border: 1px solid #334155;
@@ -132,31 +110,23 @@
       margin-top: 2rem;
       display: none;
     }
-
     table {
       width: 100%;
       border-collapse: collapse;
       margin-top: 1rem;
     }
-
     th, td {
       padding: 12px;
       text-align: left;
       border-bottom: 1px solid #475569;
     }
-
-    th {
-      background: #334155;
-      color: #cbd5e1;
-    }
-
+    th { background: #334155; color: #cbd5e1; }
     .admin-buttons {
       display: flex;
       gap: 8px;
       flex-wrap: wrap;
       margin: 1.5rem 0;
     }
-
     .admin-buttons button {
       flex: 1;
       min-width: 130px;
@@ -167,7 +137,6 @@
       cursor: pointer;
       font-size: 0.95rem;
     }
-
     #modalLoginAdmin {
       display: none;
       position: fixed;
@@ -177,7 +146,6 @@
       justify-content: center;
       z-index: 1000;
     }
-
     .modal-content {
       background: #1e293b;
       padding: 2rem;
@@ -186,7 +154,6 @@
       max-width: 420px;
       border: 1px solid #475569;
     }
-
     .hidden { display: none !important; }
   </style>
 </head>
@@ -253,7 +220,7 @@
     <button type="submit" class="btn-primary">Cadastrar Cliente</button>
   </form>
 
-  <!-- Formulário de Compras (para clientes) -->
+  <!-- Formulário de Compras -->
   <form id="cadastroFormCompra" class="form-tab hidden">
     <div class="form-group">
       <label>Seu Nome ou Telefone</label>
@@ -278,57 +245,22 @@
   <!-- ==================== ÁREA ADMINISTRATIVA ==================== -->
   <div id="areaAdmin">
     <h2><i class="fas fa-user-shield"></i> Área Administrativa</h2>
-
     <div class="admin-buttons">
       <button id="btnVerClientes" style="background:#3b82f6;">Ver Clientes</button>
       <button id="btnVerProdutos" style="background:#8b5cf6;">Ver Produtos</button>
       <button id="btnVerVendas"   style="background:#22c55e;">Ver Vendas</button>
       <button id="btnVerCompras"  style="background:#eab308;">Ver Compras</button>
-      <button id="btnCadastrarProduto" style="background:var(--purple);">+ Novo Produto</button>
+      <button id="btnNovoProduto" style="background:var(--purple);">+ Novo Produto</button>
       <button id="btnLimparDados" style="background:var(--danger);">Limpar Tudo</button>
       <button id="sairAdmin" style="background:#475569;">Sair</button>
     </div>
-
-    <!-- Formulário de Cadastro de Produto (dentro do Admin) -->
-    <div id="formProdutoAdmin" class="hidden">
-      <h3 style="margin: 1.5rem 0 1rem;">Cadastrar Novo Produto</h3>
-      <form id="cadastroFormProdutoAdmin">
-        <div class="form-group">
-          <label>Nome do Produto</label>
-          <input type="text" id="nomeProduto" placeholder="Ex: Camiseta Premium" required>
-          <i class="fas fa-box input-icon"></i>
-        </div>
-        <div class="form-group">
-          <label>Preço de Venda (R$)</label>
-          <input type="number" step="0.01" id="precoProduto" placeholder="89.90" required>
-          <i class="fas fa-dollar-sign input-icon"></i>
-        </div>
-        <div class="form-group">
-          <label>Estoque Inicial</label>
-          <input type="number" id="estoqueProduto" placeholder="50" value="0" required>
-          <i class="fas fa-warehouse input-icon"></i>
-        </div>
-        <div class="form-group">
-          <label>Categoria</label>
-          <select id="categoriaProduto">
-            <option value="Camisetas">Camisetas</option>
-            <option value="Calças">Calças</option>
-            <option value="Calçados">Calçados</option>
-            <option value="Acessórios">Acessórios</option>
-            <option value="Outros">Outros</option>
-          </select>
-        </div>
-        <button type="submit" class="btn-primary">Salvar Produto</button>
-      </form>
-    </div>
-
     <div id="conteudoAdmin"></div>
   </div>
 </div>
 
 <script>
 // ====================== CONFIGURAÇÕES ======================
-const SENHA_ADMIN = "clientesnuzzi26";   // ← Mude para uma senha forte!
+const SENHA_ADMIN = "clientesnuzzi26";
 
 // ====================== ELEMENTOS ======================
 const tituloAdminTrigger = document.getElementById('tituloAdminTrigger');
@@ -339,9 +271,8 @@ const cancelarLogin = document.getElementById('cancelarLogin');
 const erroLogin = document.getElementById('erroLogin');
 const areaAdmin = document.getElementById('areaAdmin');
 const conteudoAdmin = document.getElementById('conteudoAdmin');
-const formProdutoAdmin = document.getElementById('formProdutoAdmin');
 
-// Tabs da tela principal
+// Tabs
 const tabs = document.querySelectorAll('.tab');
 const forms = {
   cliente: document.getElementById('cadastroFormCliente'),
@@ -386,7 +317,6 @@ function tentarLogin() {
     modalLogin.style.display = 'none';
     areaAdmin.style.display = 'block';
     tituloAdminTrigger.style.color = '#f87171';
-    formProdutoAdmin.classList.add('hidden');
   } else {
     erroLogin.style.display = 'block';
     senhaAdminInput.value = '';
@@ -403,7 +333,6 @@ document.getElementById('sairAdmin').addEventListener('click', () => {
   areaAdmin.style.display = 'none';
   tituloAdminTrigger.style.color = '';
   conteudoAdmin.innerHTML = '';
-  formProdutoAdmin.classList.add('hidden');
 });
 
 // ====================== SALVAR / CARREGAR ======================
@@ -427,16 +356,14 @@ forms.cliente.addEventListener('submit', e => {
     dataNascimento: document.getElementById('dataNascimento').value,
     cadastradoEm: new Date().toISOString()
   };
-
   let clientes = carregarDados('clientes_v2');
   clientes.push(cliente);
   salvarDados('clientes_v2', clientes);
-
   mostrarSucesso("Cliente cadastrado com sucesso!", "Dados salvos no navegador.");
   forms.cliente.reset();
 });
 
-// ====================== CADASTRO DE COMPRA (TELA CLIENTE) ======================
+// ====================== CADASTRO DE COMPRA ======================
 const selectProdutoCompra = document.getElementById('produtoCompra');
 const quantidadeCompra = document.getElementById('quantidadeCompra');
 const valorTotalCompra = document.getElementById('valorTotalCompra');
@@ -467,7 +394,6 @@ function atualizarValorCompra() {
 
 forms.compra.addEventListener('submit', e => {
   e.preventDefault();
-
   const nomeCliente = document.getElementById('clienteCompra').value.trim();
   const produtoId = parseInt(selectProdutoCompra.value);
   const quantidade = parseInt(quantidadeCompra.value);
@@ -483,7 +409,6 @@ forms.compra.addEventListener('submit', e => {
   const compra = {
     id: Date.now(),
     cliente: nomeCliente,
-    produtoId: produto.id,
     produtoNome: produto.nome,
     quantidade: quantidade,
     precoUnitario: produto.preco,
@@ -495,48 +420,21 @@ forms.compra.addEventListener('submit', e => {
   compras.push(compra);
   salvarDados('compras', compras);
 
-  // Atualizar estoque
   produto.estoque -= quantidade;
   salvarDados('produtos', produtos);
 
-  mostrarSucesso("Compra registrada!", `Total: R$ ${compra.valorTotal.toFixed(2)}`);
+  mostrarSucesso("Compra registrada com sucesso!", `Total: R$ ${compra.valorTotal.toFixed(2)}`);
   forms.compra.reset();
   atualizarProdutosCompra();
 });
 
-// ====================== CADASTRO PRODUTO (ADMIN) ======================
-document.getElementById('btnCadastrarProduto').addEventListener('click', () => {
-  conteudoAdmin.innerHTML = '';
-  formProdutoAdmin.classList.toggle('hidden');
-});
-
-document.getElementById('cadastroFormProdutoAdmin').addEventListener('submit', e => {
-  e.preventDefault();
-  const produto = {
-    id: Date.now(),
-    nome: document.getElementById('nomeProduto').value.trim(),
-    preco: parseFloat(document.getElementById('precoProduto').value),
-    estoque: parseInt(document.getElementById('estoqueProduto').value),
-    categoria: document.getElementById('categoriaProduto').value,
-    cadastradoEm: new Date().toISOString()
-  };
-
-  let produtos = carregarDados('produtos');
-  produtos.push(produto);
-  salvarDados('produtos', produtos);
-
-  mostrarSucesso("Produto cadastrado com sucesso!", "Disponível para vendas e compras.");
-  document.getElementById('cadastroFormProdutoAdmin').reset();
-  formProdutoAdmin.classList.add('hidden');
-});
-
-// ====================== ÁREA ADMINISTRATIVA - VISUALIZAÇÃO ======================
+// ====================== VISUALIZAÇÃO NO ADMIN ======================
 function mostrarClientes() {
-  formProdutoAdmin.classList.add('hidden');
   const clientes = carregarDados('clientes_v2');
   let html = `<h3>Clientes Cadastrados (${clientes.length})</h3>`;
-  if (clientes.length === 0) html += `<p style="text-align:center; padding:2rem; color:#94a3b8;">Nenhum cliente cadastrado.</p>`;
-  else {
+  if (clientes.length === 0) {
+    html += `<p style="text-align:center; padding:2rem; color:#94a3b8;">Nenhum cliente cadastrado.</p>`;
+  } else {
     html += `<table><thead><tr><th>Nome</th><th>Email</th><th>Telefone</th><th>Data</th></tr></thead><tbody>`;
     clientes.forEach(c => {
       html += `<tr><td>${c.nome}</td><td>${c.email}</td><td>${c.telefone}</td><td>${new Date(c.cadastradoEm).toLocaleDateString('pt-BR')}</td></tr>`;
@@ -547,11 +445,11 @@ function mostrarClientes() {
 }
 
 function mostrarProdutos() {
-  formProdutoAdmin.classList.add('hidden');
   const produtos = carregarDados('produtos');
-  let html = `<h3>Produtos (${produtos.length})</h3>`;
-  if (produtos.length === 0) html += `<p style="text-align:center; padding:2rem; color:#94a3b8;">Nenhum produto cadastrado.</p>`;
-  else {
+  let html = `<h3>Produtos Cadastrados (${produtos.length})</h3>`;
+  if (produtos.length === 0) {
+    html += `<p style="text-align:center; padding:2rem; color:#94a3b8;">Nenhum produto cadastrado.</p>`;
+  } else {
     html += `<table><thead><tr><th>Produto</th><th>Categoria</th><th>Preço</th><th>Estoque</th></tr></thead><tbody>`;
     produtos.forEach(p => {
       html += `<tr><td>${p.nome}</td><td>${p.categoria}</td><td>R$ ${p.preco.toFixed(2)}</td><td><strong>${p.estoque}</strong></td></tr>`;
@@ -562,7 +460,6 @@ function mostrarProdutos() {
 }
 
 function mostrarVendas() {
-  formProdutoAdmin.classList.add('hidden');
   const vendas = carregarDados('vendas');
   let html = `<h3>Vendas Registradas (${vendas.length})</h3>`;
   if (vendas.length === 0) html += `<p style="text-align:center; padding:2rem; color:#94a3b8;">Nenhuma venda registrada.</p>`;
@@ -578,7 +475,6 @@ function mostrarVendas() {
 }
 
 function mostrarCompras() {
-  formProdutoAdmin.classList.add('hidden');
   const compras = carregarDados('compras');
   let html = `<h3>Compras Registradas (${compras.length})</h3>`;
   if (compras.length === 0) html += `<p style="text-align:center; padding:2rem; color:#94a3b8;">Nenhuma compra registrada.</p>`;
@@ -594,17 +490,19 @@ function mostrarCompras() {
 }
 
 // Botões Admin
-document.getElementById('btnVerClientes').addEventListener('click', mostrarClientes);
-document.getElementById('btnVerProdutos').addEventListener('click', mostrarProdutos);
-document.getElementById('btnVerVendas').addEventListener('click', mostrarVendas);
-document.getElementById('btnVerCompras').addEventListener('click', mostrarCompras);
+document.getElementById('btnVerClientes').addEventListener('click', () => { conteudoAdmin.innerHTML = ''; mostrarClientes(); });
+document.getElementById('btnVerProdutos').addEventListener('click', () => { conteudoAdmin.innerHTML = ''; mostrarProdutos(); });
+document.getElementById('btnVerVendas').addEventListener('click', () => { conteudoAdmin.innerHTML = ''; mostrarVendas(); });
+document.getElementById('btnVerCompras').addEventListener('click', () => { conteudoAdmin.innerHTML = ''; mostrarCompras(); });
+document.getElementById('btnNovoProduto').addEventListener('click', () => {
+  alert("O cadastro de produtos está em um arquivo separado.\n\nAbra o arquivo: cadastro-produtos.html");
+});
 
 document.getElementById('btnLimparDados').addEventListener('click', () => {
-  if (confirm('⚠️ APAGAR TODOS OS DADOS?\n\nClientes, Produtos, Vendas e Compras serão excluídos.')) {
+  if (confirm('⚠️ DESEJA APAGAR TODOS OS DADOS?\n\nEsta ação é irreversível!')) {
     localStorage.clear();
     alert('Todos os dados foram apagados.');
     conteudoAdmin.innerHTML = '';
-    formProdutoAdmin.classList.add('hidden');
     atualizarProdutosCompra();
   }
 });

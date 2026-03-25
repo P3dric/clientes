@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Cadastro de Vendas • Nuzzi</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  
+  <style>
+    :root {
+      --primary: #3b82f6;
+      --success: #22c55e;
+      --dark: #0f172a;
+      --gray: #334155;
+      --light: #e2e8f0;
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      font-family: system-ui, -apple-system, sans-serif;
+      background: linear-gradient(135deg, #0f172a, #1e293b);
+      color: var(--light);
+      margin: 0;
+      padding: 20px;
+      min-height: 100vh;
+    }
+
+    .container {
+      max-width: 500px;
+      margin: 2rem auto;
+      background: #1e293b;
+      padding: 2rem;
+      border-radius: 12px;
+      border: 1px solid var(--gray);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 2rem;
+      color: #60a5fa;
+    }
+
+    .form-group {
+      position: relative;
+      margin-bottom: 1.5rem;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 0.5rem;
+      color: #94a3b8;
+      font-size: 0.95rem;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 12px 12px 12px 42px;
+      background: var(--dark);
+      border: 1px solid var(--gray);
+      border-radius: 8px;
+      color: white;
+      font-size: 1rem;
+    }
+
+    input:focus, select:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+    }
+
+    .input-icon {
+      position: absolute;
+      left: 14px;
+      top: 42px;
+      color: #64748b;
+      font-size: 1.1rem;
+    }
+
+    .btn-primary {
+      width: 100%;
+      padding: 14px;
+      background: var(--primary);
+      border: none;
+      border-radius: 8px;
+      color: white;
+      font-size: 1.05rem;
+      cursor: pointer;
+      margin-top: 15px;
+    }
+
+    .btn-secondary {
+      width: 100%;
+      padding: 14px;
+      background: #475569;
+      border: none;
+      border-radius: 8px;
+      color: white;
+      font-size: 1.05rem;
+      cursor: pointer;
+      margin-top: 8px;
+    }
+
+    .total {
+      font-size: 1.3rem;
+      font-weight: bold;
+      text-align: center;
+      margin: 15px 0;
+      color: var(--success);
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h1><i class="fas fa-shopping-cart"></i> Cadastro de Venda</h1>
+
+  <form id="cadastroFormVenda">
+    
+    <div class="form-group">
+      <label>Cliente</label>
+      <select id="clienteVenda" required>
+        <option value="">Selecione o cliente...</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label>Produto</label>
+      <select id="produtoVenda" required>
+        <option value="">Selecione o produto...</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label>Quantidade</label>
+      <input type="number" id="quantidadeVenda" min="1" value="1" required>
+    </div>
+
+    <div class="form-group">
+      <label>Valor Total (R$)</label>
+      <input type="text" id="valorTotalVenda" readonly style="background:#334155; font-weight:bold;">
+    </div>
+
+    <div class="total" id="totalDisplay">R$ 0,00</div>
+
+    <button type="submit" class="btn-primary">Registrar Venda</button>
+    <button type="button" id="btnCancelar" class="btn-secondary">Cancelar</button>
+  </form>
+</div>
+
+<script>
+// ====================== CARREGAR DADOS ======================
+function carregarDados(chave) {
+  return JSON.parse(localStorage.getItem(chave) || '[]');
+}
+
+const selectCliente = document.getElementById('clienteVenda');
+const selectProduto = document.getElementById('produtoVenda');
+const quantidadeVenda = document.getElementById('quantidadeVenda');
+const valorTotalVenda = document.getElementById('valorTotalVenda');
+const totalDisplay = document.getElementById('totalDisplay');
+
+// Carregar Clientes
+function carregarClientes() {
+  const clientes = carregarDados('clientes_v2');
+  selectCliente.innerHTML = '<option value="">Selecione o cliente...</option>';
+  
+  clientes.forEach(cliente => {
+    const opt = document.createElement('option');
+    opt.value = cliente.id;
+    opt.textContent = `${cliente.nome} - ${cliente.telefone}`;
+    selectCliente.appendChild(opt);
+  });
+}
+
+// Carregar Produtos
+function carregarProdutos() {
+  const produtos = carregarDados('produtos');
+  selectProduto.innerHTML = '<option value="">Selecione o produto...</option>';
+  
+  produtos.forEach(produto => {
+    const opt = document.createElement('option');
+    opt.value = produto.id;
+    opt.textContent = `${produto.nome} (R$ ${produto.preco.toFixed(2)}) - Estoque: ${produto.estoque}`;
+    selectProduto.appendChild(opt);
+  });
+}
+
+// Atualizar valor total
+function atualizarValorTotal() {
+  const produtos = carregarDados('produtos');
+  const produtoSelecionado = produtos.find(p => p.id == selectProduto.value);
+  
+  if (produtoSelecionado) {
+    const qtd = parseInt(quantidadeVenda.value) || 1;
+    const total = produtoSelecionado.preco * qtd;
+    
+    valorTotalVenda.value = `R$ ${total.toFixed(2)}`;
+    totalDisplay.textContent = `R$ ${total.toFixed(2)}`;
+  } else {
+    valorTotalVenda.value = '';
+    totalDisplay.textContent = 'R$ 0,00';
+  }
+}
+
+// ====================== REGISTRAR VENDA ======================
+document.getElementById('cadastroFormVenda').addEventListener('submit', function(e) {
+  e.preventDefault();
+
+  const clienteId = parseInt(selectCliente.value);
+  const produtoId = parseInt(selectProduto.value);
+  const quantidade = parseInt(quantidadeVenda.value);
+
+  const clientes = carregarDados('clientes_v2');
+  const produtos = carregarDados('produtos');
+
+  const cliente = clientes.find(c => c.id === clienteId);
+  const produto = produtos.find(p => p.id === produtoId);
+
+  if (!cliente || !produto || quantidade < 1 || quantidade > produto.estoque) {
+    alert("❌ Dados inválidos ou estoque insuficiente!");
+    return;
+  }
+
+  const venda = {
+    id: Date.now(),
+    clienteId: cliente.id,
+    clienteNome: cliente.nome,
+    produtoId: produto.id,
+    produtoNome: produto.nome,
+    quantidade: quantidade,
+    precoUnitario: produto.preco,
+    valorTotal: produto.preco * quantidade,
+    dataVenda: new Date().toISOString()
+  };
+
+  // Salvar venda
+  let vendas = carregarDados('vendas');
+  vendas.push(venda);
+  localStorage.setItem('vendas', JSON.stringify(vendas));
+
+  // Atualizar estoque
+  produto.estoque -= quantidade;
+  localStorage.setItem('produtos', JSON.stringify(produtos));
+
+  alert(`✅ Venda registrada com sucesso!\n\nCliente: ${cliente.nome}\nProduto: ${produto.nome}\nQuantidade: ${quantidade}\nTotal: R$ ${venda.valorTotal.toFixed(2)}`);
+
+  // Limpar formulário
+  document.getElementById('cadastroFormVenda').reset();
+  totalDisplay.textContent = 'R$ 0,00';
+  carregarProdutos(); // atualiza estoque nos selects
+});
+
+// ====================== EVENTOS ======================
+selectProduto.addEventListener('change', atualizarValorTotal);
+quantidadeVenda.addEventListener('input', atualizarValorTotal);
+
+document.getElementById('btnCancelar').addEventListener('click', function() {
+  if (confirm("Deseja cancelar o cadastro da venda?")) {
+    document.getElementById('cadastroFormVenda').reset();
+    totalDisplay.textContent = 'R$ 0,00';
+  }
+});
+
+// ====================== INICIALIZAÇÃO ======================
+carregarClientes();
+carregarProdutos();
+</script>
+
+</body>
+</html>
