@@ -489,14 +489,16 @@ function mostrarCompras() {
   conteudoAdmin.innerHTML = html;
 }
 
-// Botões Admin
+// ====================== BOTÃO NOVO PRODUTO (JUNTADO) ======================
+document.getElementById('btnNovoProduto').addEventListener('click', () => {
+  window.open('cadastro-produtos.html', '_blank');
+});
+
+// Botões restantes
 document.getElementById('btnVerClientes').addEventListener('click', () => { conteudoAdmin.innerHTML = ''; mostrarClientes(); });
 document.getElementById('btnVerProdutos').addEventListener('click', () => { conteudoAdmin.innerHTML = ''; mostrarProdutos(); });
 document.getElementById('btnVerVendas').addEventListener('click', () => { conteudoAdmin.innerHTML = ''; mostrarVendas(); });
 document.getElementById('btnVerCompras').addEventListener('click', () => { conteudoAdmin.innerHTML = ''; mostrarCompras(); });
-document.getElementById('btnNovoProduto').addEventListener('click', () => {
-  alert("O cadastro de produtos está em um arquivo separado.\n\nAbra o arquivo: cadastro-produtos.html");
-});
 
 document.getElementById('btnLimparDados').addEventListener('click', () => {
   if (confirm('⚠️ DESEJA APAGAR TODOS OS DADOS?\n\nEsta ação é irreversível!')) {
@@ -527,4 +529,3 @@ atualizarProdutosCompra();
 </script>
 </body>
 </html>
-
