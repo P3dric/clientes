@@ -285,7 +285,10 @@
           </select>
         </div>
         <button type="submit" class="btn-primary">Salvar Produto</button>
-        <button type="button" id="cancelarNovoProduto" style="background:#475569; width:100%; padding:14px; border:none; border-radius:8px; color:white; cursor:pointer; margin-top:10px;">Cancelar</button>
+        <button type="button" id="cancelarNovoProduto" 
+                style="background:#475569; width:100%; padding:14px; border:none; border-radius:8px; color:white; cursor:pointer; margin-top:10px;">
+          Cancelar
+        </button>
       </form>
     </div>
 
@@ -308,11 +311,11 @@ const areaAdmin = document.getElementById('areaAdmin');
 const conteudoAdmin = document.getElementById('conteudoAdmin');
 const formNovoProduto = document.getElementById('formNovoProduto');
 
-// Tabs
+// Tabs e Forms
 const tabs = document.querySelectorAll('.tab');
 const forms = {
   cliente: document.getElementById('cadastroFormCliente'),
-  compra: document.getElementById('cadastroFormCompra')
+  compra:  document.getElementById('cadastroFormCompra')
 };
 
 // Sucesso
@@ -320,6 +323,21 @@ const confirmacao = document.getElementById('confirmacao');
 const msgSucesso = document.getElementById('msgSucesso');
 const subMsg = document.getElementById('subMsg');
 const novoCadastroBtn = document.getElementById('novoCadastro');
+
+// ====================== TROCA DE ABAS - CORRIGIDO ======================
+tabs.forEach(tab => {
+  tab.addEventListener('click', () => {
+    // Remove "active" de todas as abas
+    tabs.forEach(t => t.classList.remove('active'));
+    // Ativa a aba clicada
+    tab.classList.add('active');
+
+    // Esconde todos os formulários
+    Object.values(forms).forEach(f => f.classList.add('hidden'));
+    // Mostra o formulário correto
+    forms[tab.dataset.tab].classList.remove('hidden');
+  });
+});
 
 // ====================== LOGIN ADMIN ======================
 function abrirModalAdmin() {
@@ -570,23 +588,3 @@ atualizarProdutosCompra();
 </script>
 </body>
 </html>
-
-
-
-
-
- <script>
-// Troca de abas - Versão simples e confiável
-document.getElementById('tabCliente').addEventListener('click', () => {
-  document.getElementById('tabCliente').classList.add('active');
-  document.getElementById('tabCompra').classList.remove('active');
-  document.getElementById('formCliente').classList.remove('hidden');
-  document.getElementById('formCompra').classList.add('hidden');
-});
-
-document.getElementById('tabCompra').addEventListener('click', () => {
-  document.getElementById('tabCompra').classList.add('active');
-  document.getElementById('tabCliente').classList.remove('active');
-  document.getElementById('formCompra').classList.remove('hidden');
-  document.getElementById('formCliente').classList.add('hidden');
-});
