@@ -184,7 +184,7 @@
 <div class="container" id="mainContent">
   <h1 id="tituloAdminTrigger">Sistema Nuzzi</h1>
 
-  <!-- Abas da tela principal -->
+  <!-- Abas -->
   <div class="tabs">
     <div class="tab active" data-tab="cliente">Cliente</div>
     <div class="tab" data-tab="compra">Compras</div>
@@ -450,10 +450,10 @@ forms.compra.addEventListener('submit', e => {
   atualizarProdutosCompra();
 });
 
-// ====================== CADASTRO DE PRODUTO ======================
+// ====================== CADASTRO DE PRODUTO (FUNCIONANDO) ======================
 document.getElementById('btnNovoProduto').addEventListener('click', () => {
-  conteudoAdmin.innerHTML = '';
-  formNovoProduto.classList.toggle('hidden');
+  conteudoAdmin.innerHTML = '';           // Limpa tabelas
+  formNovoProduto.classList.toggle('hidden');  // Mostra o formulário
 });
 
 document.getElementById('cadastroFormProduto').addEventListener('submit', e => {
@@ -474,6 +474,7 @@ document.getElementById('cadastroFormProduto').addEventListener('submit', e => {
 
   alert(`✅ Produto "${produto.nome}" cadastrado com sucesso!`);
 
+  // Limpa e esconde o formulário
   document.getElementById('cadastroFormProduto').reset();
   formNovoProduto.classList.add('hidden');
 });
