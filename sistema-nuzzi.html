@@ -3,41 +3,33 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Sistema Nuzzi</title>
+  <title>Sistema Nuzzi - Teste</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
   
   <style>
-    :root {
-      --primary: #3b82f6;
-      --dark: #0f172a;
-      --gray: #334155;
-      --light: #e2e8f0;
-    }
-    * { box-sizing: border-box; }
     body {
-      font-family: system-ui, -apple-system, sans-serif;
+      font-family: system-ui, sans-serif;
       background: linear-gradient(135deg, #0f172a, #1e293b);
-      color: var(--light);
+      color: #e2e8f0;
       margin: 0;
       padding: 20px;
       min-height: 100vh;
     }
     .container {
       max-width: 500px;
-      margin: 2rem auto;
+      margin: 40px auto;
       background: #1e293b;
-      padding: 2rem;
+      padding: 30px;
       border-radius: 12px;
-      border: 1px solid var(--gray);
-      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+      border: 1px solid #334155;
     }
-    h1 { text-align: center; margin-bottom: 1.5rem; }
+    h1 { text-align: center; margin-bottom: 20px; }
     .tabs {
       display: flex;
       background: #334155;
       border-radius: 8px;
-      padding: 4px;
-      margin-bottom: 1.5rem;
+      padding: 5px;
+      margin-bottom: 20px;
     }
     .tab {
       flex: 1;
@@ -45,35 +37,39 @@
       text-align: center;
       border-radius: 6px;
       cursor: pointer;
-      font-weight: 500;
     }
     .tab.active {
-      background: var(--primary);
+      background: #3b82f6;
       color: white;
     }
     .form-group {
-      position: relative;
-      margin-bottom: 1.5rem;
+      margin-bottom: 15px;
     }
-    label { display: block; margin-bottom: 0.5rem; color: #94a3b8; }
+    label {
+      display: block;
+      margin-bottom: 5px;
+      color: #94a3b8;
+    }
     input, select {
       width: 100%;
-      padding: 12px 12px 12px 42px;
-      background: var(--dark);
-      border: 1px solid var(--gray);
+      padding: 12px;
+      background: #0f172a;
+      border: 1px solid #475569;
       border-radius: 8px;
       color: white;
     }
     .btn-primary {
       width: 100%;
       padding: 14px;
-      background: var(--primary);
+      background: #3b82f6;
       border: none;
       border-radius: 8px;
       color: white;
+      font-size: 1.05rem;
       cursor: pointer;
+      margin-top: 10px;
     }
-    .hidden { display: none !important; }
+    .hidden { display: none; }
   </style>
 </head>
 <body>
@@ -83,24 +79,24 @@
 
   <!-- Abas -->
   <div class="tabs">
-    <div class="tab active" data-tab="cliente">Cliente</div>
-    <div class="tab" data-tab="compra">Compras</div>
+    <div class="tab active" id="tabCliente">Cliente</div>
+    <div class="tab" id="tabCompra">Compras</div>
   </div>
 
   <!-- Formulário Cliente -->
-  <form id="formCliente" class="form-tab">
+  <form id="formCliente">
     <div class="form-group">
       <label>Nome completo</label>
-      <input type="text" id="nome" placeholder="Ex: João Silva" required>
+      <input type="text" placeholder="Ex: João Silva" required>
     </div>
     <button type="submit" class="btn-primary">Cadastrar Cliente</button>
   </form>
 
   <!-- Formulário Compras -->
-  <form id="formCompra" class="form-tab hidden">
+  <form id="formCompra" class="hidden">
     <div class="form-group">
       <label>Seu Nome ou Telefone</label>
-      <input type="text" id="clienteCompra" placeholder="Ex: João ou (41) 99999-9999" required>
+      <input type="text" id="clienteCompra" placeholder="Nome ou telefone" required>
     </div>
     <div class="form-group">
       <label>Produto</label>
@@ -113,33 +109,35 @@
       <input type="number" id="quantidadeCompra" min="1" value="1" required>
     </div>
     <div class="form-group">
-      <label>Valor Total (R$)</label>
-      <input type="text" id="valorTotalCompra" readonly style="background:#334155;">
+      <label>Valor Total</label>
+      <input type="text" id="valorTotalCompra" readonly value="R$ 0,00">
     </div>
     <button type="submit" class="btn-primary">Registrar Compra</button>
   </form>
 </div>
 
 <script>
-// Troca de abas
-document.querySelectorAll('.tab').forEach(tab => {
-  tab.addEventListener('click', () => {
-    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-    tab.classList.add('active');
-
-    document.querySelectorAll('.form-tab').forEach(f => f.classList.add('hidden'));
-    document.getElementById('form' + tab.dataset.tab.charAt(0).toUpperCase() + tab.dataset.tab.slice(1)).classList.remove('hidden');
-  });
+// Troca de abas - Versão simples e confiável
+document.getElementById('tabCliente').addEventListener('click', () => {
+  document.getElementById('tabCliente').classList.add('active');
+  document.getElementById('tabCompra').classList.remove('active');
+  document.getElementById('formCliente').classList.remove('hidden');
+  document.getElementById('formCompra').classList.add('hidden');
 });
 
-// Cadastro de Compra
+document.getElementById('tabCompra').addEventListener('click', () => {
+  document.getElementById('tabCompra').classList.add('active');
+  document.getElementById('tabCliente').classList.remove('active');
+  document.getElementById('formCompra').classList.remove('hidden');
+  document.getElementById('formCliente').classList.add('hidden');
+});
+
+// Registro de compra (teste)
 document.getElementById('formCompra').addEventListener('submit', function(e) {
   e.preventDefault();
-  alert("Compra registrada com sucesso! (Teste)");
+  alert('✅ Compra registrada com sucesso!');
   this.reset();
 });
-
-// Inicialização simples
 </script>
 </body>
 </html>
