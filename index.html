@@ -220,7 +220,7 @@
     <button type="submit" class="btn-primary">Cadastrar Cliente</button>
   </form>
 
-  <!-- ==================== FORMULÁRIO DE COMPRAS ==================== -->
+  <!-- Formulário de Compras -->
   <form id="cadastroFormCompra" class="form-tab hidden">
     <div class="form-group">
       <label>Seu Nome ou Telefone</label>
@@ -284,6 +284,11 @@ const confirmacao = document.getElementById('confirmacao');
 const msgSucesso = document.getElementById('msgSucesso');
 const subMsg = document.getElementById('subMsg');
 const novoCadastroBtn = document.getElementById('novoCadastro');
+
+// Select de produtos na compra
+const selectProdutoCompra = document.getElementById('produtoCompra');
+const quantidadeCompra = document.getElementById('quantidadeCompra');
+const valorTotalCompra = document.getElementById('valorTotalCompra');
 
 // ====================== MÁSCARA TELEFONE ======================
 document.getElementById('telefone').addEventListener('input', function(e) {
@@ -363,11 +368,7 @@ forms.cliente.addEventListener('submit', e => {
   forms.cliente.reset();
 });
 
-// ====================== CADASTRO DE COMPRA (AGORA FUNCIONANDO) ======================
-const selectProdutoCompra = document.getElementById('produtoCompra');
-const quantidadeCompra = document.getElementById('quantidadeCompra');
-const valorTotalCompra = document.getElementById('valorTotalCompra');
-
+// ====================== ATUALIZAR PRODUTOS NO SELECT ======================
 function atualizarProdutosCompra() {
   selectProdutoCompra.innerHTML = '<option value="">Selecione o produto...</option>';
   carregarDados('produtos').forEach(p => {
@@ -392,6 +393,7 @@ function atualizarValorCompra() {
   }
 }
 
+// ====================== CADASTRO DE COMPRA ======================
 forms.compra.addEventListener('submit', e => {
   e.preventDefault();
   const nomeCliente = document.getElementById('clienteCompra').value.trim();
@@ -479,14 +481,76 @@ function mostrarCompras() {
   conteudoAdmin.innerHTML = html;
 }
 
-// Botões Admin
+// ====================== CADASTRO DE NOVO PRODUTO ======================
+function mostrarFormularioNovoProduto() {
+  const html = `
+    <h3><i class="fas fa-plus"></i> Cadastrar Novo Produto</h3>
+    <div class="form-group">
+      <label>Nome do Produto</label>
+      <input type="text" id="novoProdutoNome" placeholder="Ex: Camiseta Básica" required>
+    </div>
+    <div class="form-group">
+      <label>Categoria</label>
+      <input type="text" id="novoProdutoCategoria" placeholder="Ex: Roupas, Acessórios..." required>
+    </div>
+    <div class="form-group">
+      <label>Preço (R$)</label>
+      <input type="number" id="novoProdutoPreco" step="0.01" min="0" placeholder="49.90" required>
+    </div>
+    <div class="form-group">
+      <label>Quantidade em Estoque</label>
+      <input type="number" id="novoProdutoEstoque" min="0" value="10" required>
+    </div>
+    <div style="display:flex; gap:10px;">
+      <button id="salvarNovoProduto" class="btn-primary" style="flex:1;">Salvar Produto</button>
+      <button id="cancelarNovoProduto" style="flex:1; background:#475569; padding:14px; border:none; border-radius:8px; color:white; cursor:pointer;">Cancelar</button>
+    </div>
+  `;
+
+  conteudoAdmin.innerHTML = html;
+
+  document.getElementById('salvarNovoProduto').addEventListener('click', () => {
+    const nome = document.getElementById('novoProdutoNome').value.trim();
+    const categoria = document.getElementById('novoProdutoCategoria').value.trim();
+    const preco = parseFloat(document.getElementById('novoProdutoPreco').value);
+    const estoque = parseInt(document.getElementById('novoProdutoEstoque').value);
+
+    if (!nome || !categoria || isNaN(preco) || preco <= 0 || isNaN(estoque)) {
+      alert("Preencha todos os campos corretamente!");
+      return;
+    }
+
+    let produtos = carregarDados('produtos');
+
+    const novoProduto = {
+      id: Date.now(),
+      nome: nome,
+      categoria: categoria,
+      preco: preco,
+      estoque: estoque
+    };
+
+    produtos.push(novoProduto);
+    salvarDados('produtos', produtos);
+
+    alert(`Produto "${nome}" cadastrado com sucesso!`);
+    mostrarProdutos();
+    atualizarProdutosCompra();
+  });
+
+  document.getElementById('cancelarNovoProduto').addEventListener('click', () => {
+    mostrarProdutos();
+  });
+}
+
+// ====================== BOTÕES ADMIN ======================
 document.getElementById('btnVerClientes').addEventListener('click', () => { conteudoAdmin.innerHTML = ''; mostrarClientes(); });
 document.getElementById('btnVerProdutos').addEventListener('click', () => { conteudoAdmin.innerHTML = ''; mostrarProdutos(); });
 document.getElementById('btnVerVendas').addEventListener('click', () => { conteudoAdmin.innerHTML = ''; mostrarVendas(); });
 document.getElementById('btnVerCompras').addEventListener('click', () => { conteudoAdmin.innerHTML = ''; mostrarCompras(); });
 
 document.getElementById('btnNovoProduto').addEventListener('click', () => {
-  alert("O cadastro de produtos está em arquivo separado.\n\nCrie o arquivo cadastro-produtos.html");
+  mostrarFormularioNovoProduto();
 });
 
 document.getElementById('btnLimparDados').addEventListener('click', () => {
@@ -513,7 +577,7 @@ novoCadastroBtn.addEventListener('click', () => {
   tabs[1].classList.remove('active');
 });
 
-// Inicialização
+// ====================== INICIALIZAÇÃO ======================
 atualizarProdutosCompra();
 </script>
 </body>
