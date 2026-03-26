@@ -570,3 +570,152 @@ atualizarProdutosCompra();
 </script>
 </body>
 </html>
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Sistema Nuzzi - Teste</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  
+  <style>
+    body {
+      font-family: system-ui, sans-serif;
+      background: linear-gradient(135deg, #0f172a, #1e293b);
+      color: #e2e8f0;
+      margin: 0;
+      padding: 20px;
+      min-height: 100vh;
+    }
+    .container {
+      max-width: 500px;
+      margin: 40px auto;
+      background: #1e293b;
+      padding: 30px;
+      border-radius: 12px;
+      border: 1px solid #334155;
+    }
+    h1 { text-align: center; margin-bottom: 20px; }
+    .tabs {
+      display: flex;
+      background: #334155;
+      border-radius: 8px;
+      padding: 5px;
+      margin-bottom: 20px;
+    }
+    .tab {
+      flex: 1;
+      padding: 12px;
+      text-align: center;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    .tab.active {
+      background: #3b82f6;
+      color: white;
+    }
+    .form-group {
+      margin-bottom: 15px;
+    }
+    label {
+      display: block;
+      margin-bottom: 5px;
+      color: #94a3b8;
+    }
+    input, select {
+      width: 100%;
+      padding: 12px;
+      background: #0f172a;
+      border: 1px solid #475569;
+      border-radius: 8px;
+      color: white;
+    }
+    .btn-primary {
+      width: 100%;
+      padding: 14px;
+      background: #3b82f6;
+      border: none;
+      border-radius: 8px;
+      color: white;
+      font-size: 1.05rem;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+    .hidden { display: none; }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h1>Sistema Nuzzi</h1>
+
+  <!-- Abas -->
+  <div class="tabs">
+    <div class="tab active" id="tabCliente">Cliente</div>
+    <div class="tab" id="tabCompra">Compras</div>
+  </div>
+
+  <!-- Formulário Cliente -->
+  <form id="formCliente">
+    <div class="form-group">
+      <label>Nome completo</label>
+      <input type="text" placeholder="Ex: João Silva" required>
+    </div>
+    <button type="submit" class="btn-primary">Cadastrar Cliente</button>
+  </form>
+
+  <!-- Formulário Compras -->
+  <form id="formCompra" class="hidden">
+    <div class="form-group">
+      <label>Seu Nome ou Telefone</label>
+      <input type="text" id="clienteCompra" placeholder="Nome ou telefone" required>
+    </div>
+    <div class="form-group">
+      <label>Produto</label>
+      <select id="produtoCompra" required>
+        <option value="">Selecione um produto...</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Quantidade</label>
+      <input type="number" id="quantidadeCompra" min="1" value="1" required>
+    </div>
+    <div class="form-group">
+      <label>Valor Total</label>
+      <input type="text" id="valorTotalCompra" readonly value="R$ 0,00">
+    </div>
+    <button type="submit" class="btn-primary">Registrar Compra</button>
+  </form>
+</div>
+
+<script>
+// Troca de abas - Versão simples e confiável
+document.getElementById('tabCliente').addEventListener('click', () => {
+  document.getElementById('tabCliente').classList.add('active');
+  document.getElementById('tabCompra').classList.remove('active');
+  document.getElementById('formCliente').classList.remove('hidden');
+  document.getElementById('formCompra').classList.add('hidden');
+});
+
+document.getElementById('tabCompra').addEventListener('click', () => {
+  document.getElementById('tabCompra').classList.add('active');
+  document.getElementById('tabCliente').classList.remove('active');
+  document.getElementById('formCompra').classList.remove('hidden');
+  document.getElementById('formCliente').classList.add('hidden');
+});
+
+// Registro de compra (teste)
+document.getElementById('formCompra').addEventListener('submit', function(e) {
+  e.preventDefault();
+  alert('✅ Compra registrada com sucesso!');
+  this.reset();
+});
+</script>
+</body>
+</html>
