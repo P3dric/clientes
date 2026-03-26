@@ -325,6 +325,17 @@ const msgSucesso = document.getElementById('msgSucesso');
 const subMsg = document.getElementById('subMsg');
 const novoCadastroBtn = document.getElementById('novoCadastro');
 
+// ====================== TROCA DE ABAS (MELHORADA) ======================
+tabs.forEach(tab => {
+  tab.addEventListener('click', () => {
+    tabs.forEach(t => t.classList.remove('active'));
+    tab.classList.add('active');
+
+    Object.values(forms).forEach(f => f.classList.add('hidden'));
+    forms[tab.dataset.tab].classList.remove('hidden');
+  });
+});
+
 // ====================== LOGIN ADMIN ======================
 function abrirModalAdmin() {
   modalLogin.style.display = 'flex';
