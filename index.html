@@ -324,17 +324,13 @@ const msgSucesso = document.getElementById('msgSucesso');
 const subMsg = document.getElementById('subMsg');
 const novoCadastroBtn = document.getElementById('novoCadastro');
 
-// ====================== TROCA DE ABAS - CORRIGIDO ======================
+// ====================== TROCA DE ABAS ======================
 tabs.forEach(tab => {
   tab.addEventListener('click', () => {
-    // Remove "active" de todas as abas
     tabs.forEach(t => t.classList.remove('active'));
-    // Ativa a aba clicada
     tab.classList.add('active');
 
-    // Esconde todos os formulários
     Object.values(forms).forEach(f => f.classList.add('hidden'));
-    // Mostra o formulário correto
     forms[tab.dataset.tab].classList.remove('hidden');
   });
 });
@@ -369,6 +365,7 @@ document.getElementById('sairAdmin').addEventListener('click', () => {
   tituloAdminTrigger.style.color = '';
   conteudoAdmin.innerHTML = '';
   formNovoProduto.classList.add('hidden');
+  atualizarProdutosCompra(); // Atualiza a lista de produtos disponíveis após sair do admin
 });
 
 // ====================== SALVAR / CARREGAR ======================
@@ -399,23 +396,35 @@ forms.cliente.addEventListener('submit', e => {
   forms.cliente.reset();
 });
 
-// ====================== CADASTRO DE COMPRA ======================
+// ====================== CADASTRO DE COMPRA (COM FILTRO DE ESTOQUE) ======================
 const selectProdutoCompra = document.getElementById('produtoCompra');
 const quantidadeCompra = document.getElementById('quantidadeCompra');
 const valorTotalCompra = document.getElementById('valorTotalCompra');
 
 function atualizarProdutosCompra() {
   selectProdutoCompra.innerHTML = '<option value="">Selecione o produto...</option>';
-  carregarDados('produtos').forEach(p => {
+  
+  const produtos = carregarDados('produtos');
+  
+  const produtosComEstoque = produtos
+    .filter(p => p.estoque > 0)
+    .sort((a, b) => a.nome.localeCompare(b.nome));
+
+  produtosComEstoque.forEach(p => {
     const opt = document.createElement('option');
     opt.value = p.id;
     opt.textContent = `${p.nome} - R$ ${p.preco.toFixed(2)} (Estoque: ${p.estoque})`;
     selectProdutoCompra.appendChild(opt);
   });
-}
 
-selectProdutoCompra.addEventListener('change', atualizarValorCompra);
-quantidadeCompra.addEventListener('input', atualizarValorCompra);
+  if (produtosComEstoque.length === 0) {
+    const opt = document.createElement('option');
+    opt.value = "";
+    opt.textContent = "Nenhum produto em estoque no momento";
+    opt.disabled = true;
+    selectProdutoCompra.appendChild(opt);
+  }
+}
 
 function atualizarValorCompra() {
   const produtos = carregarDados('produtos');
@@ -428,17 +437,31 @@ function atualizarValorCompra() {
   }
 }
 
+selectProdutoCompra.addEventListener('change', atualizarValorCompra);
+quantidadeCompra.addEventListener('input', atualizarValorCompra);
+
 forms.compra.addEventListener('submit', e => {
   e.preventDefault();
+
   const nomeCliente = document.getElementById('clienteCompra').value.trim();
   const produtoId = parseInt(selectProdutoCompra.value);
-  const quantidade = parseInt(quantidadeCompra.value);
+  const quantidade = parseInt(quantidadeCompra.value) || 1;
+
+  if (!nomeCliente) {
+    alert("Por favor, informe seu nome ou telefone.");
+    return;
+  }
 
   const produtos = carregarDados('produtos');
   const produto = produtos.find(p => p.id === produtoId);
 
-  if (!produto || quantidade < 1 || quantidade > produto.estoque) {
-    alert("Produto inválido ou estoque insuficiente!");
+  if (!produto) {
+    alert("Selecione um produto válido.");
+    return;
+  }
+
+  if (quantidade < 1 || quantidade > produto.estoque) {
+    alert(`Quantidade inválida! Estoque disponível: ${produto.estoque}`);
     return;
   }
 
@@ -456,10 +479,15 @@ forms.compra.addEventListener('submit', e => {
   compras.push(compra);
   salvarDados('compras', compras);
 
+  // Atualiza estoque
   produto.estoque -= quantidade;
   salvarDados('produtos', produtos);
 
-  mostrarSucesso("Compra registrada com sucesso!", `Total: R$ ${compra.valorTotal.toFixed(2)}`);
+  mostrarSucesso(
+    "Compra registrada com sucesso!", 
+    `${quantidade}x ${produto.nome} - Total: R$ ${compra.valorTotal.toFixed(2)}`
+  );
+
   forms.compra.reset();
   atualizarProdutosCompra();
 });
@@ -490,6 +518,7 @@ document.getElementById('cadastroFormProduto').addEventListener('submit', e => {
 
   document.getElementById('cadastroFormProduto').reset();
   formNovoProduto.classList.add('hidden');
+  atualizarProdutosCompra(); // Atualiza a lista de compras após adicionar produto
 });
 
 document.getElementById('cancelarNovoProduto').addEventListener('click', () => {
@@ -583,7 +612,7 @@ novoCadastroBtn.addEventListener('click', () => {
   tabs[1].classList.remove('active');
 });
 
-// Inicialização
+// ====================== INICIALIZAÇÃO ======================
 atualizarProdutosCompra();
 </script>
 </body>
